@@ -155,6 +155,13 @@ class quantri extends sp{
         header("location: index.php?c=loaisp&a=xem");
     }
     
+    public function xoaloaisp($idLoai){
+        settype($idCL, "int");
+        $sql = "DELETE FROM loaisp  WHERE idLoai=$idLoai";
+        if(!$result = $this->db->query($sql)) die($sql);
+        header("location: index.php?c=loaisp&a=xem");
+    }
+    
     private function validate($input){
         $input = $this->db->escape_string($input);
         $input = trim($input);

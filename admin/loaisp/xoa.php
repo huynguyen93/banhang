@@ -1,5 +1,5 @@
 <?php
 
-if(!isset($_GET['idCL']) || $_GET['idCL'] < 1) header("location: index.php?c=chungloai&a=xem");
+if(!isset($_GET['idLoai']) || $_GET['idLoai'] < 1) header("location: index.php?c=loaisp&a=xem");
 
-$qt->xoachungloai($_GET['idCL']);
+$qt->xoaloaisp($_GET['idLoai']);

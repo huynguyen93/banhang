@@ -16,7 +16,7 @@ $per_page = 8;
                 if(isset($listsp[$i])){ $row = $listsp[$i];
             ?>
             <a href="index.php?c=sanpham&a=chitiet&idsp=<?php echo $row['idSP'];?>">
-            <div class="tomtatsp col-md-3 col-sm-3">
+            <div class="tomtatsp col-md-3 col-sm-3 thumbnail">
                 <center>
                 <span class="luotmua"><?php echo $row['SoLanMua'] ?> lượt mua</span>
                 <img class="tomtatsp-hinh img-responsive" src="upload/sanpham/hinhchinh/<?php echo $row['urlHinh']; ?>" />
@@ -39,7 +39,7 @@ $per_page = 8;
         <div class="row">
             <?php foreach($listsp as $row){?>
             <a href="index.php?c=sanpham&a=chitiet&idsp=<?php echo $row['idSP'];?>">
-            <div class="tomtatsp col-md-3 col-sm-3 col-xs-6">
+            <div class="tomtatsp col-md-3 col-sm-3 col-xs-6 thumbnail">
                 <center>
                 <span class="luotmua"><?php echo $row['SoLanMua'] ?> lượt mua</span>
                 <img class="tomtatsp-hinh img-responsive" src="upload/sanpham/hinhchinh/<?php echo $row['urlHinh']; ?>" />
@@ -62,7 +62,7 @@ $per_page = 8;
         <div class="row">
             <?php foreach($listsp as $row){?>
             <a href="index.php?c=sanpham&a=chitiet&idsp=<?php echo $row['idSP'];?>">
-            <div class="tomtatsp col-md-3 col-sm-3">
+            <div class="tomtatsp col-md-3 col-sm-3 thumbnail">
                 <center>
                 <span class="luotmua"><?php echo $row['SoLanMua'] ?> lượt mua</span>
                 <img class="tomtatsp-hinh img-responsive" src="upload/sanpham/hinhchinh/<?php echo $row['urlHinh']; ?>" />
@@ -88,7 +88,7 @@ $per_page = 8;
                 if(isset($listsp[$i])){ $row = $listsp[$i];
             ?>
             <a href="index.php?c=sanpham&a=chitiet&idsp=<?php echo $row['idSP'];?>">
-            <div class="tomtatsp col-md-3 col-sm-3">
+            <div class="tomtatsp col-md-3 col-sm-3 thumbnail">
                 <center>
                 <span class="luotmua"><?php echo $row['SoLanMua'] ?> lượt mua</span>
                 <img class="tomtatsp-hinh  img-responsive" src="upload/sanpham/hinhchinh/<?php echo $row['urlHinh']; ?>" />

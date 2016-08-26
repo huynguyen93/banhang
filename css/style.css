@@ -6,7 +6,7 @@
 .active-cat{font-weight: bold;}
 
 
-.tomtatsp{margin-bottom: 15px; min-height:240px; position: relative;}
+.tomtatsp{margin-bottom: 15px; min-height:250px; position: relative;}
 .tomtatsp .tomtatsp-hinh{height: 160px;}
 .tomtatsp .tomtatsp-ten{font-weight: bold;}
 .luotmua {position: absolute; left:0; background: #fff; overflow: hidden; height: 0;transition: height 1s; padding: 0 5px;}
@@ -27,5 +27,7 @@
 .side-menu >li:hover ul{background: #f5f5f5; display:block; z-index: 9999;}
 
 .btn-them{margin-top: 0px;}
+.btn-them .glyphicon-plus{  transition: transform 400ms ease-in-out;}
+.btn-them:hover .glyphicon-plus {transform: rotate(360deg);}
 
 .content{border-left: 1px solid #eee; padding-left: 20px; height: 100%;}
