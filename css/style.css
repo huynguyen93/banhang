@@ -1,0 +1,31 @@
+.header{margin-top: 5px;}
+.header .brand .logo{font-size: 50px; position: relative;}
+.header .brand .brand-name{margin-bottom: 0px;margin-top: 0;}
+.header .brand a:hover{text-decoration: none; color: black;}
+.header button{margin-top: 0;}
+.active-cat{font-weight: bold;}
+
+
+.tomtatsp{margin-bottom: 15px; min-height:240px; position: relative;}
+.tomtatsp .tomtatsp-hinh{height: 160px;}
+.tomtatsp .tomtatsp-ten{font-weight: bold;}
+.luotmua {position: absolute; left: 30%; background: #fff; overflow: hidden; height: 0;transition: height 1s; padding: 0 5px;}
+.tomtatsp:hover .luotmua{height:20px; background: #337ab7; color: #fff;}
+
+.chitietsp{}
+.chitietsp img{width: 100%;}
+.no-hover:hover{text-decoration: none; }
+
+
+
+.row{margin-bottom: 10px;}
+.btn{margin-top: 20px;}
+
+.side-menu{position: relative;}
+.side-menu li:hover{background: #f5f5f5;}
+.side-menu ul{position: absolute;  left: 100%; top:0; width: 100%; background: #fff; display:none;}
+.side-menu >li:hover ul{background: #f5f5f5; display:block; z-index: 9999;}
+
+.btn-them{margin-top: 0px;}
+
+.content{border-left: 1px solid #eee; padding-left: 20px; height: 100%;}
