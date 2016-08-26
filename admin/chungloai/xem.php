@@ -1,6 +1,6 @@
 <?php 
 
-$listchungloai = $qt->laydschungloai();
+$listchungloai = $qt->laychungloai(0);
 
 ?>
 <h2 class="">Chủng loại </h2>
@@ -21,7 +21,7 @@ $listchungloai = $qt->laydschungloai();
         <td><?php echo $row['TenCL'];?></td>
         <td><?php echo $row['ThuTu'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
-        <td><a href="#">Sửa</a> / <a href="#">Xóa</a></td>
+        <td><a href="index.php?c=chungloai&a=sua&idCL=<?php echo $row['idCL'];?>">Sửa</a> / <a href="index.php?c=chungloai&a=xoa&idCL=<?php echo $row['idCL'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>

@@ -9,7 +9,7 @@
 .tomtatsp{margin-bottom: 15px; min-height:240px; position: relative;}
 .tomtatsp .tomtatsp-hinh{height: 160px;}
 .tomtatsp .tomtatsp-ten{font-weight: bold;}
-.luotmua {position: absolute; left: 30%; background: #fff; overflow: hidden; height: 0;transition: height 1s; padding: 0 5px;}
+.luotmua {position: absolute; left:0; background: #fff; overflow: hidden; height: 0;transition: height 1s; padding: 0 5px;}
 .tomtatsp:hover .luotmua{height:20px; background: #337ab7; color: #fff;}
 
 .chitietsp{}

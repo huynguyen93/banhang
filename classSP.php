@@ -78,6 +78,16 @@ class sp{
         return $data;
     }
     
+    public function laythuoctinhsp($idSP){
+        $sql = "select * from sanpham_thuoctinh where idSP=$idSP";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;        
+    }
+    
     public function laysptuongduong($gia, $phantram=5){
         $min = $gia*(100-$phantram)/100;
         $max = $gia*(100+$phantram)/100;

@@ -23,9 +23,15 @@ if(isset($_GET['a'])) $a = $_GET['a']; else $a = 'index';
     <div class="col-md-8 content">
         <?php
         
-        if($c == 'chungloai' && $a == 'index') require_once("chungloai/xem.php");
+        if($c == 'chungloai' && $a == 'xem') require_once("chungloai/xem.php");
         elseif($c == 'chungloai' && $a == 'them') require_once("chungloai/them.php");
+        elseif($c == 'chungloai' && $a == 'sua') require_once("chungloai/sua.php");
+        elseif($c == 'chungloai' && $a == 'xoa') require_once("chungloai/xoa.php");
         
+        elseif($c == 'loaisp' && $a == 'xem') require_once("loaisp/xem.php");
+        elseif($c == 'loaisp' && $a == 'them') require_once("loaisp/them.php");
+        elseif($c == 'loaisp' && $a == 'sua') require_once("loaisp/sua.php");
+        elseif($c == 'loaisp' && $a == 'xoa') require_once("loaisp/xoa.php");
         ?>
     </div>
 
