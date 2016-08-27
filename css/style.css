@@ -1,3 +1,5 @@
+.row{margin-bottom: 10px;}
+
 .header{margin-top: 5px;}
 .header .brand .logo{font-size: 50px; position: relative;}
 .header .brand .brand-name{margin-bottom: 0px;margin-top: 0;}
@@ -5,6 +7,7 @@
 .header button{margin-top: 0;}
 .active-cat{font-weight: bold;}
 
+.user-area{margin-bottom: 0px;}
 
 .tomtatsp{margin-bottom: 15px; min-height:250px; position: relative;}
 .tomtatsp .tomtatsp-hinh{height: 160px;}
@@ -18,7 +21,7 @@
 
 
 
-.row{margin-bottom: 10px;}
+
 .btn{margin-top: 20px;}
 
 .side-menu{position: relative;}
@@ -31,3 +34,15 @@
 .btn-them:hover .glyphicon-plus {transform: rotate(360deg);}
 
 .content{border-left: 1px solid #eee; padding-left: 20px; height: 100%;}
+
+.uphinh{}
+.xemhinhnhanh img{display:none;}
+.xemhinhnhanh:hover{position: relative;}
+.xemhinhnhanh:hover img{
+    display: block;
+    position: absolute;
+    background: #000;
+    width: 200px;
+    height: 200px;
+    left:100%;
+}

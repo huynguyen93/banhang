@@ -3,7 +3,7 @@
     <i class="brand-slogan">Website bán điện thoại!</span></a>
 </div>
 <div class="col-md-9">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" style="margin-bottom:0;">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-nav" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>

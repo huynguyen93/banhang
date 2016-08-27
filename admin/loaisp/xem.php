@@ -19,7 +19,7 @@ if(isset($_POST['idCL'])) $listloaisp = $qt->layloaisptheochungloai($_POST['idCL
     </div>
 </form>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>

@@ -4,7 +4,7 @@
     <li>
         <a href="index.php?c=chungloai&a=xem">Chủng loại <span class="glyphicon glyphicon-menu-right pull-right"></span></a>
         <ul class="nav ">
-            <li><a href="index.php?c=chungloai&a=xem">Xem danh sách</a></li>
+            <li class="<?php if($c == 'chungloai') echo "active"; ?>"><a href="index.php?c=chungloai&a=xem">Xem danh sách</a></li>
             <li><a href="index.php?c=chungloai&a=them">Thêm mới</a></li>
         </ul>
     </li>
@@ -16,9 +16,9 @@
         </ul>
     </li>
     <li>
-        <a href="#">Sản phẩm <span class="glyphicon glyphicon-menu-right pull-right"></span></a>
+        <a href="index.php?c=sanpham&a=xem">Sản phẩm <span class="glyphicon glyphicon-menu-right pull-right"></span></a>
         <ul class="nav ">
-            <li><a href="#">Xem danh sách</a></li>
+            <li><a href="index.php?c=sanpham&a=xem">Xem danh sách</a></li>
             <li><a href="#">Thêm mới</a></li>
         </ul>
     </li>

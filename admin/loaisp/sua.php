@@ -5,7 +5,7 @@ if(!isset($_GET['idLoai']) || $_GET['idLoai'] < 1) header("location: index.php?c
 $idLoai = $_GET['idLoai'];
 
 $loaisp = $qt->layloaisp($idLoai);
-print_r($loaisp);
+
 if(isset($_POST['btnsualoaisp'])) $qt->sualoaisp($idLoai);
 
 ?>

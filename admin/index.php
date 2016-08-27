@@ -8,7 +8,7 @@ if(isset($_GET['a'])) $a = $_GET['a']; else $a = 'index';
 <meta charset='utf-8'>
 <link rel="stylesheet" href="../css/bootstrap.css"> 
 <link rel="stylesheet" href="../css/style.css">
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="../js/jquery.js"></script>
 </head>
 <body>
     
@@ -32,6 +32,11 @@ if(isset($_GET['a'])) $a = $_GET['a']; else $a = 'index';
         elseif($c == 'loaisp' && $a == 'them') require_once("loaisp/them.php");
         elseif($c == 'loaisp' && $a == 'sua') require_once("loaisp/sua.php");
         elseif($c == 'loaisp' && $a == 'xoa') require_once("loaisp/xoa.php");
+		
+		elseif($c == 'sanpham' && $a == 'xem') require_once("sanpham/xem.php");
+        elseif($c == 'sanpham' && $a == 'them') require_once("sanpham/them.php");
+        elseif($c == 'sanpham' && $a == 'sua') require_once("sanpham/sua.php");
+        elseif($c == 'sanpham' && $a == 'xoa') require_once("sanpham/xoa.php");
         ?>
     </div>
 

@@ -1,4 +1,5 @@
 <?php
+    
 class sp{
     public $db;
     
@@ -70,7 +71,9 @@ class sp{
         
         if($id <= 0) header('location: index.php');
         
-        if(!$result = $this->db->query("select * from sanpham where idSP=$id")) die("loi ket noi");
+        $sql = "select * from sanpham where idSP=$id";
+        
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
         
         if($result->num_rows < 1) header('location: index.php');
         
@@ -141,7 +144,7 @@ class sp{
     }
     
     public function thanhphantrang($url, $totalrows, $current_page, $per_page=5, $pages_per_group=5){
-        $totalpages = ceil($totalrows/$per_page);
+        $totalpages = ceil($totalrows/$per_page); if ($totalpages < 2) return false;
         
         $totalgroups = ceil($totalpages/5);
         
@@ -191,6 +194,15 @@ class sp{
         }
 
         header("Location: index.php?action=chitiet&idsp={$idsp}");
+    }
+    
+    protected function int($input){
+        settype($input, "int");
+        return $input;
+    }
+    
+    protected function redirect($url){
+        header("Location: $url");
     }
     
 }
