@@ -1,11 +1,12 @@
-<a href="">Dang nhap</a> / <a href="#">Dang ky</a>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="glyphicon glyphicon-shopping-cart"></i>Giỏ hàng</h3>
-    </div>
+<div class="btn-giohang" id="btn-giohang" style="display:inline-block">
+    <a href="#">Giỏ hàng<i class="glyphicon glyphicon-shopping-cart" style="font-size: 25px;"></i> (0)</a>
+</div>
+
+
+<div class="panel panel-default div-giohang" id="div-giohang">
     <div class="panel-body">
-        <?php if(count($_SESSION['sanpham']) > 0){?>
-        <table class="table table-striped">
+        <?php if(count($_SESSION['sanpham']) == 0){?>
+        <table class="table table-striped" style="width: 500px;">
             <thead>
                 <th>Ten san pham</th>
                 <th>Quantity</th>

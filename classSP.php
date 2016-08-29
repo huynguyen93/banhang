@@ -36,7 +36,7 @@ class sp{
         return $row[0];
     }
     
-    public function laysptheogia($min = 0, $max = 0, &$totalrows){
+    public function laysptheogia($min = 0, $max = 0, $order = 'desc', &$totalrows){
         
         if($min < 0 || $max < 0){
             echo "khong tim thay san pham phu hop";
@@ -48,8 +48,8 @@ class sp{
             return false;
         }
         
-        if($max == 0) $sql = "select * from sanpham where Gia>=$min order by Gia desc";
-          else $sql = "select * from sanpham where Gia>=$min and Gia<$max order by Gia desc";
+        if($max == 0) $sql = "select * from sanpham where Gia>=$min order by Gia $order";
+          else $sql = "select * from sanpham where Gia>=$min and Gia<$max order by Gia $order";
         
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         
@@ -78,6 +78,19 @@ class sp{
         if($result->num_rows < 1) header('location: index.php');
         
         $data = $result->fetch_assoc();
+        return $data;
+    }
+    
+    public function layid10spmoi($idCL){
+        $sql = "select idSP from sanpham WHERE idCL=$idCL order by NgayCapNhat DESC LIMIT 0,10";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        
+        if($result->num_rows < 1) header('location: index.php');
+        
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row['idSP'];
+        }
         return $data;
     }
     
@@ -120,7 +133,7 @@ class sp{
         return $data;
     }
     
-    public function laysptheochungloai($idCL, &$totalrows, $current_page=1, $per_page=5){
+    public function laysptheochungloai($idCL, $order='Gia DESC', &$totalrows, $current_page=1, $per_page=5){
         if($idCL <= 0) header('location: index.php');
         
         if(!$result = $this->db->query("select count(*) from sanpham where idCL=$idCL")) die("loi ket noi");
@@ -132,7 +145,7 @@ class sp{
         
         $start = ceil($current_page-1)*$per_page;
         
-        if(!$result = $this->db->query("select * from sanpham where idCL=$idCL order by Gia desc limit $start, $per_page")) die("loi ket noi");
+        if(!$result = $this->db->query("select * from sanpham where idCL=$idCL order by $order limit $start, $per_page")) die("loi ket noi");
         
         if($result->num_rows < 1) header('location: index.php');
         
@@ -144,6 +157,8 @@ class sp{
     }
     
     public function thanhphantrang($url, $totalrows, $current_page, $per_page=5, $pages_per_group=5){
+        if($totalrows <= $per_page) return false;
+        
         $totalpages = ceil($totalrows/$per_page); if ($totalpages < 2) return false;
         
         $totalgroups = ceil($totalpages/5);

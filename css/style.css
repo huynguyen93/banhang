@@ -7,13 +7,23 @@
 .header button{margin-top: 0;}
 .active-cat{font-weight: bold;}
 
-.user-area{margin-bottom: 0px;}
+.menuloai> li a{padding: 0px;}
+
+.user-area >div{border-bottom: 1px solid #000; padding: 8px 5px; font-size: 15px;}
+
+.filter-giohang{position: relative;}
+.div-giohang{position: absolute; top: 100%; right:0; z-index: 1; display: none; min-width: 240px;}
+.btn-giohang a:hover{text-decoration: none;}
+.giohang:hover .div-giohang{display: block;}
 
 .tomtatsp{margin-bottom: 15px; min-height:250px; position: relative;}
 .tomtatsp .tomtatsp-hinh{height: 160px;}
 .tomtatsp .tomtatsp-ten{font-weight: bold;}
-.luotmua {position: absolute; left:0; background: #fff; overflow: hidden; height: 0;transition: height 1s; padding: 0 5px;}
-.tomtatsp:hover .luotmua{height:20px; background: #337ab7; color: #fff;}
+.luotmua {position: absolute; left:0; top:0; background: #337ab7; color: #fff; border-radius: 3px; overflow: hidden; height: 0;transition: height 1s;  padding: 0 5px;}
+.tomtatsp:hover .luotmua{height:20px; }
+.spmoi{position: absolute; right:0; top:0; padding: 0 10px;background: red; color:yellow; border-radius: 3px;}
+.xemnhanh{position: absolute; font-size: 16px; background: #fff; bottom: 15px; left:0; right:0; margin: 0 auto; height:0; overflow: hidden; transition: height 1s;}
+.tomtatsp:hover .xemnhanh{height: 40px; }
 
 .chitietsp{}
 .chitietsp img{width: 100%;}
@@ -22,18 +32,18 @@
 
 
 
-.btn{margin-top: 20px;}
+/*.btn{margin-top: 20px;}*/
 
-.side-menu{position: relative;}
+/*.side-menu{position: relative;}*/
 .side-menu li:hover{background: #f5f5f5;}
-.side-menu ul{position: absolute;  left: 100%; top:0; width: 100%; background: #fff; display:none;}
+.side-menu ul{position: absolute;  left: 0; top:100%; width: 120%; background: #fff; display:none;}
 .side-menu >li:hover ul{background: #f5f5f5; display:block; z-index: 9999;}
 
 .btn-them{margin-top: 0px;}
 .btn-them .glyphicon-plus{  transition: transform 400ms ease-in-out;}
 .btn-them:hover .glyphicon-plus {transform: rotate(360deg);}
 
-.content{border-left: 1px solid #eee; padding-left: 20px; height: 100%;}
+.content{}
 
 .uphinh{}
 .xemhinhnhanh img{display:none;}

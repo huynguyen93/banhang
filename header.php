@@ -15,14 +15,14 @@
         <div class="collapse navbar-collapse" id="top-nav">
             <ul class="nav navbar-nav">
                 <?php $listchungloai = $sp->laydschungloai();?>
-                <?php $i=1; foreach($listchungloai as $chungloai){ ?>
-                <li class="<?php if($i==1){echo "active-cat"; $i++;}?>"><a href="index.php?c=sanpham&a=sptheochungloai&idCL=<?php echo $chungloai['idCL'];?>"><?php echo $chungloai['TenCL'] ?></a></li>
+                <?php foreach($listchungloai as $chungloai){ ?>
+                <li class="<?php if($idCL == $chungloai['idCL']){echo "active-cat";}?>"><a href="index.php?chungloai=<?php echo $chungloai['idCL'];?>"><?php echo $chungloai['TenCL'] ?></a></li>
                 <?php }?>
                 <li class=""><a href="">Tin tức</a></li>
                 <li class=""><a href="">Khuyến mãi</a></li>
                 <li class=""><a href="">Liên hệ</a></li>
             </ul>
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left pull">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search for...">
                 <span class="input-group-btn">

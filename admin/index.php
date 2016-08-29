@@ -13,12 +13,12 @@ if(isset($_GET['a'])) $a = $_GET['a']; else $a = 'index';
 <body>
     
 <div class="container">
-
+    <nav class="navbar navbar-default" style="margin-bottom: 0;">
+        <?php include("nav.php");?>
+    </nav>
 <div class="row">
     
-    <div class="col-md-2">
-        <?php include("nav.php");?>
-    </div>
+    
     
     <div class="col-md-8 content">
         <?php

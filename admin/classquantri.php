@@ -166,15 +166,15 @@ class quantri extends sp{
 		settype($idCL, "int"); settype($idLoai, "int");
 		
         //tinh tong so dong`
-		if($idLoai == 0) $sql = "select count(*) from sanpham where idCL=$idCL";
+        if($idLoai == 0) $sql = "select count(*) from sanpham where idCL=$idCL";
 		  else $sql = "select count(*) from sanpham where idCL=$idCL AND idLoai=$idLoai";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $row = $result->fetch_array();
         $totalrows = $row[0];
         $start = ($current_page-1)*$per_page;
         
-        if($idLoai == 0) $sql = "select * from sanpham where idCL=$idCL limit $start,$per_page";
-		  else $sql = "select * from sanpham where idCL=$idCL AND idLoai=$idLoai limit $start,$per_page";
+        if($idLoai == 0) $sql = "select * from sanpham where idCL=$idCL order by idSP DESC limit $start,$per_page";
+		  else $sql = "select * from sanpham where idCL=$idCL AND idLoai=$idLoai order by idSP DESC limit $start,$per_page";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         
         $data = array();
@@ -185,85 +185,169 @@ class quantri extends sp{
 	}
     
     public function themsanpham(){
-        settype($_POST['idLoai'], "int");
         if($_POST['idLoai'] == 0){
-            $this->error['idLoai'] = 'Chọn loại sản phẩm';
+            $this->errors['idLoai'] = 'Chọn loại sản phẩm';
             return false;
         }
         
-        if(!isset($_POST['TenSP'])){
-            $this->error['TenSP'] = 'Nhập tên sản phẩm';
+        if(empty($_POST['TenSP'])){
+            $this->errors['TenSP'] = 'Nhập tên sản phẩm';
             return false;
         }
         
         settype($_POST['Gia'], "int");
-        if(!isset($_POST['Gia'])){
-            $this->error['Gia'] = 'Nhập tên sản phẩm';
+        if($_POST['Gia'] == 0){
+            $this->errors['Gia'] = 'Nhập giá sản phẩm';
             return false;
         }
         
-        $idCL = $_POST['idCL'];        
-        $idLoai = $_POST['idLoai'];        
-        $ten = $_POST['TenSP'];       
-        $gia = $_POST['Gia'];        
+        $urlHinh = "updating.png";
+        if($_FILES['urlHinh']['error'] != 4){
+            //kiem tra dinh dang file hinh upload
+            $ext_list = array("jpeg", "png", "jpg");
+            $file_ext = pathinfo($_FILES['urlHinh']['name'], PATHINFO_EXTENSION);
+            if(!in_array($file_ext, $ext_list)){
+                $this->errors['urlHinh'] = 'Chỉ chấp nhận các định dạng: jpeg, png, jpg!';
+                return false;
+            }
+            //kiem tra dung luong hinh upload:
+            $max_size = 1024*1024*2;
+            if($_FILES['urlHinh']['size'] > $max_size){
+                $this->errors['urlHinh'] = 'Chỉ chấp nhận hình dưới 2MB!';
+                return false;
+            }
+            //loi he thong, mang:
+            if($_FILES['urlHinh']['error'] > 0){
+                $this->errors['urlHinh'] = 'Có lỗi xảy ra!';
+                return false;
+            }
+            //ten hinh luu lai:
+            $newname = $this->changeTitle($_POST['TenSP']) ."-".time(). "." . $file_ext;
+            
+            //bat dau upload:
+            $path = '../upload/sanpham/hinhchinh/' . $newname;
+            if(move_uploaded_file($_FILES['urlHinh']['tmp_name'], $path) == false){
+                $this->errors['urlHinh'] = 'Có lỗi xảy ra!';
+                return false;
+            }
+            //return
+            $urlHinh = $newname;
+        }
+        
+        settype($_POST['Gia'], "int");
         settype($_POST['SoLuongTonKho'], "int");
-        $soluongtonkho = $_POST['SoLuongTonKho'];
-        $anhien = $_POST['AnHien'];        
-        $ngay = date('Y-m-d', time());        
-        $ghichu = $_POST['GhiChu'];        
-        $mota = $_POST['MoTa'];        
-        $baiviet = $_POST['baiviet'];        
-        $urlhinh = "https://placeholdit.imgix.net/~text?txtsize=13&txt=updating&w=140&h=185";
+        $ngay = date('Y-m-d', time());
         
-        $path = 'http://localhost/banhang/upload/sanpham/hinhchinh/';
         
-        if(isset($_FILES['urlHinh']['name'])) $urlhinh = basename($_FILES['urlHinh']['name']);
-        
-        $sql = "INSERT INTO sanpham VALUES(null, $idLoai, $idCL, '$ten', '$mota', '$ngay', $gia, '$urlhinh', '$baiviet', 0, $soluongtonkho, '$ghichu', 0, $anhien)";
-        
+        $sql = "INSERT INTO sanpham 
+                VALUES(null, {$_POST['idLoai']}, {$_POST['idCL']}, '{$_POST['TenSP']}', 
+                            '{$_POST['MoTa']}', '$ngay', {$_POST['Gia']}, '$urlHinh', 
+                            '{$_POST['baiviet']}', 0, {$_POST['SoLuongTonKho']}, 
+                            '{$_POST['GhiChu']}', 0, {$_POST['AnHien']})";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $this->errors['thanhcong'] = 'Thêm thành công';
     }
     
     public function suasanpham($idSP){
         settype($_POST['idLoai'], "int");
         if($_POST['idLoai'] == 0){
-            $this->error['idLoai'] = 'Chọn loại sản phẩm';
-            return false;
-        }        
-        if(!isset($_POST['TenSP'])){
-            $this->error['TenSP'] = 'Nhập tên sản phẩm';
-            return false;
-        }        
-        settype($_POST['Gia'], "int");
-        if(!isset($_POST['Gia'])){
-            $this->error['Gia'] = 'Nhập tên sản phẩm';
+            $this->errors['idLoai'] = 'Chọn loại sản phẩm';
             return false;
         }
         
-        $idCL = $_POST['idCL'];        
-        $idLoai = $_POST['idLoai'];        
-        $ten = $_POST['TenSP'];       
-        $gia = $_POST['Gia'];        
-        settype($_POST['SoLuongTonKho'], "int");
-        $soluongtonkho = $_POST['SoLuongTonKho'];
-        $anhien = $_POST['AnHien'];        
-        $ngay = date('Y-m-d', time());        
-        $ghichu = $_POST['GhiChu'];        
-        $mota = $_POST['MoTa'];        
-        $baiviet = $_POST['baiviet'];        
-        $path = 'http://localhost/banhang/upload/sanpham/hinhchinh/';  
-        $queryhinh = "";
-        if(!empty($_FILES['urlHinh']['name'])){
-            $urlhinh = basename($_FILES['urlHinh']['name']);
-            $queryhinh = "urlHinh='$urlhinh',";
+        if(!isset($_POST['TenSP'])){
+            $this->errors['TenSP'] = 'Nhập tên sản phẩm';
+            return false;
         }
+        
+        settype($_POST['Gia'], "int");
+        if(!isset($_POST['Gia'])){
+            $this->errors['Gia'] = 'Nhập tên sản phẩm';
+            return false;
+        }
+        
+        
+        //kiem tra neu upload hinh moi
+        $queryhinh = "";
+        if($_FILES['urlHinh']['error'] != 4){
+            //kiem tra dinh dang file hinh upload
+            $ext_list = array("jpeg", "png", "jpg");
+            $file_ext = pathinfo($_FILES['urlHinh']['name'], PATHINFO_EXTENSION);
+            if(!in_array($file_ext, $ext_list)){
+                $this->errors['urlHinh'] = 'Chỉ chấp nhận các định dạng: jpeg, png, jpg!';
+                return false;
+            }
+            //kiem tra dung luong hinh upload:
+            $max_size = 1024*1024*2;
+            if($_FILES['urlHinh']['size'] > $max_size){
+                $this->errors['urlHinh'] = 'Chỉ chấp nhận hình dưới 2MB!';
+                return false;
+            }
+            //loi he thong, mang:
+            if($_FILES['urlHinh']['error'] > 0){
+                $this->errors['urlHinh'] = 'Có lỗi xảy ra!';
+                return false;
+            }
+            //ten hinh luu lai:
+            $urlHinh = $this->changeTitle($_POST['TenSP']) ."-".time(). "." . $file_ext;
+            //bat dau upload:
+            $path = '../upload/sanpham/hinhchinh/' . $urlHinh;
+            if(move_uploaded_file($_FILES['urlHinh']['tmp_name'], $path) == false){
+                $this->errors['urlHinh'] = 'Có lỗi xảy ra!';
+                return false;
+            }
+            
+            //xoa hinh cu:
+            $sql = "select urlHinh from sanpham where idSP=$idSP";
+            if(!$result = $this->db->query($sql)) die("loi ket noi");
+            $row = $result->fetch_assoc();
+            $hinhcu = $row['urlHinh'];
+            //return
+            $queryhinh = "urlHinh='$urlHinh',";
+        }
+        
+        settype($_POST['idCL'], "int");
+        settype($_POST['idLoai'], "int");
+        settype($_POST['SoLuongTonKho'], "int");
+        settype($_POST['AnHien'], "int");
+        settype($_POST['Gia'], "int");
+        
+        $ten = $this->validate($_POST['TenSP']);     
+        $ghichu = $this->validate($_POST['GhiChu']);
+        $mota = $this->validate($_POST['MoTa']);
+        $baiviet = $this->validate($_POST['baiviet']);
+        
+        $ngay = date('Y-m-d', time());  
            
         $sql = "UPDATE sanpham
-                SET idLoai=$idLoai, idCL=$idCL, TenSP='$ten',  MoTa='$mota',
-                    NgayCapNhat='$ngay', Gia=$gia, $queryhinh baiviet='$baiviet', 
-                    SoLuongTonKho=$soluongtonkho,GhiChu='$ghichu',AnHien=$anhien
+                SET idLoai={$_POST['idLoai']}, idCL={$_POST['idCL']}, TenSP='$ten',  MoTa='$mota',
+                    NgayCapNhat='$ngay', Gia={$_POST['Gia']}, $queryhinh baiviet='$baiviet', 
+                    SoLuongTonKho={$_POST['SoLuongTonKho']},GhiChu='$ghichu',AnHien={$_POST['AnHien']}
                 WHERE idSP=$idSP";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $this->errors['thanhcong'] = "Sửa thành công";
+        //xoa hinh cu:
+        if(!isset($hinhcu)) return true;
+        if($hinhcu != "updating.png") unlink('../upload/sanpham/hinhchinh/'.$hinhcu);
+    }
+    
+    public function xoasanpham($idSP){
+        //lay urlHinh san pham de xoa:
+        $sql = "SELECT urlHinh from sanpham WHERE idSP=$idSP";
+        if(!$result = $this->db->query($sql)) die("Loi ket noi");
+        $row = $result->fetch_array();
+        $urlHinh = $row[0];
+        $path = '../upload/sanpham/hinhchinh/' . $urlHinh;
+        
+        //xoa du lieu:
+        $sql = "DELETE FROM sanpham WHERE idSP=$idSP";
+        if(!$result = $this->db->query($sql)) die("Loi ket noi");
+        if(!empty($urlHinh)) unlink($path);
+        header("Location: index.php?c=sanpham&a=xem");
+    }
+    
+    public function layuser($idUser = 0){
+        if($idUser == 0) $sql = "select * from users";
     }
     
     private function validate($input){
@@ -271,4 +355,28 @@ class quantri extends sp{
         $input = trim($input);
         return $input;
     }
+    
+    protected function changeTitle($str){
+        $unicode = array(
+            'a'=>'á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ', 'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ằ|Ẳ|Ẵ|Ặ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+            'd'=>'đ','D'=>'Đ',
+            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ', 'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+            'i'=>'í|ì|ỉ|ĩ|ị', 'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ', 'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự', 'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+            'y'=>'ý|ỳ|ỷ|ỹ|ỵ', 'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ'
+        );
+        
+        foreach($unicode as $khongdau => $codau){
+            $arr = explode("|", $codau);
+            $str = str_replace($arr, $khongdau, $str);
+        }
+        $str = str_replace(array('?', '&', '+', '%', "'", '"','\''), "", $str);
+        $str = trim($str);
+        while(strpos($str, '  ') > 0) $str = str_replace("  ", " ", $str);
+        $str = mb_convert_case($str, MB_CASE_LOWER, 'utf-8');
+        $str = str_replace(" ", "-", $str);
+        return $str;
+    }
+    
 }
