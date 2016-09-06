@@ -1,4 +1,4 @@
-<?php session_start(); require_once("classSP.php");
+<?php require_once("classSP.php"); require_once("classUser.php");
 
 $sp = new sp;
 //gio hang
@@ -6,8 +6,7 @@ if(!isset($_SESSION['sanpham'])) $_SESSION['sanpham'] = array();
 
 // lay san pham theo chung loai, loaisp, idsp, neu ko cho chung loai, chung loai = dien thoai di dong
 $idCL = 1; if(isset($_GET['chungloai'])) $idCL = $_GET['chungloai'];
-if(isset($_GET['loaisp'])) $idLoai = $_GET['loaisp'];
-if(isset($_GET['idSP'])) $idSP = $_GET['idSP'];
+$idLoai = 0; if(isset($_GET['loaisp'])) $idLoai = $_GET['loaisp'];
 
 //phan trang san pham:
 if(isset($_GET['page'])) $current_page = $_GET['page'];
@@ -15,44 +14,71 @@ if(isset($_GET['page'])) $current_page = $_GET['page'];
 $per_page = 30;
 $pages_per_group = 5;
 
+//user
+$u = new user;
 ?>
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://fonts.googleapis.com/css?family=Baloo+Tamma" rel="stylesheet">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/style.css">
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </head>
     
 <body>
     <div class="container">
         <div class="header row">
-            <?php require_once("header.php"); ?>
+            <?php include("sanpham_chungloai.php"); ?>
         </div>
         
-        <div class="row">
-            <div class="col-md-10"><?php require_once("menuloaisp.php"); ?></div>
-            <div class="col-md-2 user-area text-right"><?php require_once("user.php");?></div>
+        <div class="row menuloai-user">
+            <div class="col-md-9"><?php require_once("sanpham_loaisp.php"); ?></div>
+            <div class="col-md-3 user-area text-center"><?php  if(isset($_SESSION['user_hoten'])) require_once("user_info.php"); else require_once("user.php");?></div>
         </div>
         
         <div class="row filter-giohang">
-            <div class="col-md-10"><?php require_once("filter.php");?></div>
-            <div class="col-md-2 text-right giohang"><?php require_once("giohang.php");?></div>
+            <?php if(isset($_GET['action']) && $_GET['action'] =='xemdonhang') echo ""; else{?>
+            <div class="col-xs-9 col-md-9"><?php if(isset($_GET['idSP'])) echo ""; else require_once("sanpham_filter.php");?></div>
+            <div class="col-xs-3 col-md-3 text-center giohang"><?php require_once("giohang.php");?></div>
+            <?php }?>
         </div>
         
         <div class="row">
             <div class="col-md-12">
                 <?php
-                if(isset($idLoai) && isset($idCL)) require_once("sptheoloai.php");
-                  else require_once('sptheochungloai.php');
+                if(isset($_GET['action']) && $_GET['action']=='xemdonhang') require_once("donhang_chitiet.php");
+                elseif(isset($_GET['action']) && $_GET['action'] =='thanhcong') require_once("dathangthanhcong.php");
+                elseif(isset($_GET['action']) && $_GET['action'] =='thongtinnhanhang') require_once("thongtinnhanhang.php");
+                elseif(isset($_GET['idSP'])) require_once("sanpham_chitiet.php");
+                else require_once("sanpham_danhsach.php");
                 ?>
             </div>
         </div>
-        
-        <div class="row footer">
-        </div>
     </div>
-
+    <div id="footer" style="background: #222; color: #9d9d9d;">
+        <?php require_once("footer.php");?>
+    </div>
+    <script>
+        function themvaogiohang(){
+            $.ajax({
+                url: 'process.php',
+                type: 'get',
+                data: 'themvaogiohang='+$("#themvaogiohang").attr('idsp'),
+                success: function(data){
+                    $("#sosanpham").html(data);
+                }
+            });
+        }
+        function giohangtomtat(){
+            $.ajax({
+                url: 'giohang-tomtat.php',
+                success: function(data){
+                    $("#giohang-tomtat").html(data);
+                }
+            });
+        }
+    </script>
 </body>
 </html>

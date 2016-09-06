@@ -1,12 +1,13 @@
 <?php
 
-if(!isset($_GET['idCL']) || $_GET['idCL'] < 1) header("location: index.php?c=chungloai&a=xem");
+if(!isset($_GET['idCL']) || $_GET['idCL'] < 1) header("location: index.php?a=chungloai-xem");
     
 $idCL = $_GET['idCL'];
 
 $chungloai = $qt->laychungloai($idCL);
 
 if(isset($_POST['btnsuachungloai'])) $qt->suachungloai($idCL);
+
 ?>
 <h2>Cập nhật chủng loại</h2>
 <div class="">

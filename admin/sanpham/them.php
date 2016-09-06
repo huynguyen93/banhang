@@ -76,7 +76,7 @@ if(isset($_POST['themsanpham'])) $qt->themsanpham();
     </div>
         <div class="form-group" style="clear:both;">
             <label for="MoTa" >Mô tả</label>
-            <textarea name="MoTa" class="form-control tinymce" rows="3"></textarea>
+            <textarea name="MoTa" class="form-control" rows="3"></textarea>
         </div>
         
         <div class="form-group" >

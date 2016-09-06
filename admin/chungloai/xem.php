@@ -1,6 +1,6 @@
 <?php 
 
-$listchungloai = $qt->laychungloai(0);
+$listchungloai = $qt->laychungloai(0, -1);
 
 ?>
 <h2 class="">Chủng loại </h2>
@@ -12,7 +12,7 @@ $listchungloai = $qt->laychungloai(0);
             <th>Tên</th>
             <th>Thứ tự</th>
             <th>Ẩn/Hiện</th>
-            <th><a class="btn btn-sm btn-success btn-them" href="index.php?c=chungloai&a=them"><span class="glyphicon glyphicon-plus"></span>Thêm mới</a></th>
+            <th><a class="btn btn-sm btn-success btn-them" href="index.php?a=chungloai-them"><span class="glyphicon glyphicon-plus"></span>Thêm mới</a></th>
         </tr>
     </thead>
     <?php foreach($listchungloai as $row){?>
@@ -21,7 +21,7 @@ $listchungloai = $qt->laychungloai(0);
         <td><?php echo $row['TenCL'];?></td>
         <td><?php echo $row['ThuTu'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
-        <td><a href="index.php?c=chungloai&a=sua&idCL=<?php echo $row['idCL'];?>">Sửa</a> / <a href="index.php?c=chungloai&a=xoa&idCL=<?php echo $row['idCL'];?>">Xóa</a></td>
+        <td><a href="index.php?a=chungloai-sua&idCL=<?php echo $row['idCL'];?>">Sửa</a> / <a href="index.php?a=chungloai-xoa&idCL=<?php echo $row['idCL'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>

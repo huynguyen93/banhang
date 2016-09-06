@@ -1,23 +1,30 @@
+html, body{height: 100%;}
 .row{margin-bottom: 10px;}
-
+hr{margin: 10px 0;}
 .header{margin-top: 5px;}
-.header .brand .logo{font-size: 50px; position: relative;}
-.header .brand .brand-name{margin-bottom: 0px;margin-top: 0;}
-.header .brand a:hover{text-decoration: none; color: black;}
+.nav-brand{color: #444;font-family: 'Baloo Tamma', cursive; font-size:35px; position:relative; top: 5px;}
+.nav-brand:hover{text-decoration: none; color: black;}
 .header button{margin-top: 0;}
 .active-cat{font-weight: bold;}
 
 .menuloai> li a{padding: 0px;}
 
-.user-area >div{border-bottom: 1px solid #000; padding: 8px 5px; font-size: 15px;}
+#user-area{border-bottom: 1px solid #ddd; padding: 8px 5px; font-size: 15px;}
+.modal {position: fixed; z-index: 9; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden;  
+        background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.7);}
+.modal-content { background-color: #fefefe; margin: 5px auto; padding: 20px; border: 1px solid #888; height:625px; width: 30%; overflow:auto; position: relative;}
+.close {color: #000; position: absolute;top:5px; right:5px; font-size: 28px; font-weight: bold;}
+.close:hover, .close:focus {color: black; text-decoration: none; cursor: pointer;}
 
+.filter .form-group select{width: 150px;}
 .filter-giohang{position: relative;}
+.filter-giohang .form-inline{display: inline-block;}
 .div-giohang{position: absolute; top: 100%; right:0; z-index: 1; display: none; min-width: 240px;}
 .btn-giohang a:hover{text-decoration: none;}
 .giohang:hover .div-giohang{display: block;}
 
 .tomtatsp{margin-bottom: 15px; min-height:250px; position: relative;}
-.tomtatsp .tomtatsp-hinh{height: 160px;}
+.tomtatsp-hinh{height: 160px;}
 .tomtatsp .tomtatsp-ten{font-weight: bold;}
 .luotmua {position: absolute; left:0; top:0; background: #337ab7; color: #fff; border-radius: 3px; overflow: hidden; height: 0;transition: height 1s;  padding: 0 5px;}
 .tomtatsp:hover .luotmua{height:20px; }
@@ -29,19 +36,15 @@
 .chitietsp img{width: 100%;}
 .no-hover:hover{text-decoration: none; }
 
-
-
-
-/*.btn{margin-top: 20px;}*/
-
-/*.side-menu{position: relative;}*/
 .side-menu li:hover{background: #f5f5f5;}
 .side-menu ul{position: absolute;  left: 0; top:100%; width: 120%; background: #fff; display:none;}
 .side-menu >li:hover ul{background: #f5f5f5; display:block; z-index: 9999;}
 
 .btn-them{margin-top: 0px;}
-.btn-them .glyphicon-plus{  transition: transform 400ms ease-in-out;}
+.glyphicon-plus{  transition: transform 400ms ease-in-out;}
+.glyphicon-ok{opacity:0;  transition: opacity 400ms ease-in-out;}
 .btn-them:hover .glyphicon-plus {transform: rotate(360deg);}
+#cart{transition: font-size 400ms ease-in-out, color 400ms ease-in-out;}
 
 .content{}
 
@@ -56,3 +59,20 @@
     height: 200px;
     left:100%;
 }
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  width: 100%;
+  margin: auto;
+}
+
+#menu-qt{background: #222; color:#9d9d9d; list-style: none; padding: 0; heighT:100%;}
+#menu-qt > li{border-bottom: 1px solid #333;}
+#menu-qt > li ul{padding-left: 25px; display:none;}
+#menu-qt li {display: block; padding: 5px;}
+#menu-qt > li:hover{background: #111;}
+/*#menu-qt > li:hover ul{display: block;}*/
+#menu-qt a{color: #9d9d9d; display: block; padding: 5px; padding-left:15px;}
+#menu-qt > li:hover a{color:white;}
+#menu-qt .active{background: #111;}
+/*#menu-qt .active ul{ display: block;}*/
+#menu-qt .active a{color: white;}

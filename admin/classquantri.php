@@ -6,10 +6,40 @@ class quantri extends sp{
         parent::__construct();
     }
     
-    public function laychungloai($idCL=0){
+    public function laydsdonhang($daxuly, &$totalrows){
+        $sql = "SELECT idDH, idUser, ThoiDiemDatHang, TenNguoiNhan, DTNguoiNhan, DiaChi, DaTraTien FROM donhang WHERE DaXuLy=$daxuly ORDER BY idDH DESC";
+        if(!$result = $this->db->query($sql)) die("Loi ket noi");
+        $totalrows = $result->num_rows;
+        
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function laychitietdonhang($idDH){
+        $sql = "SELECT * FROM donhangchitiet WHERE idDH=$idDH";
+        if(!$result = $this->db->query($sql)) die("Loi ket noi");
+        
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function laythongtindonhang($idDH){
+        $sql = "SELECT * FROM donhang WHERE idDH=$idDH";
+        if(!$result = $this->db->query($sql)) die("Loi ket noi");
+        $data = $result->fetch_assoc();
+        return $data;
+    }
+    
+    public function laychungloai($idCL=0, $AnHien=1){
         // $idCL == 0 -> lay het tat ca;
-        if($idCL > 0) $sql = "select * from chungloai where idCL=$idCL";
-          else $sql = "select * from chungloai";
+        if($idCL > 0) $sql = "select * from chungloai where idCL=$idCL AND (AnHien=$AnHien OR $AnHien=-1)";
+          else $sql = "select * from chungloai WHERE AnHien=$AnHien OR $AnHien=-1";
         
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $data = array();
@@ -343,7 +373,59 @@ class quantri extends sp{
         $sql = "DELETE FROM sanpham WHERE idSP=$idSP";
         if(!$result = $this->db->query($sql)) die("Loi ket noi");
         if(!empty($urlHinh)) unlink($path);
-        header("Location: index.php?c=sanpham&a=xem");
+        header("Location: index.php?a=sanpham-xem");
+    }
+    
+    public function laytensanpham($idSP){
+        $sql = "SELECT TenSP from sanpham WHERE idSP=$idSP";
+        if(!$result = $this->db->query($sql));
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    
+    public function laybinhluan($kiem_duyet=0, &$totalrows, $current_page=1, $per_page=10){
+        $sql = "SELECT count(id_comment) FROM sanpham_comment WHERE kiem_duyet=$kiem_duyet";
+        if(!$result = $this->db->query($sql));
+        $row = $result->fetch_row();
+        $totalrows = $row[0];
+        
+        $start = ($current_page-1)*$per_page;
+        
+        $sql = "SELECT * FROM sanpham_comment WHERE kiem_duyet=$kiem_duyet ORDER BY id_comment DESC LIMIT $start, $per_page";
+        if(!$result = $this->db->query($sql));
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function lay1binhluan($idBL){
+        $sql = "SELECT * FROM sanpham_comment WHERE id_comment=$idBL";
+        if(!$result = $this->db->query($sql));
+        $data = $result->fetch_assoc();
+        return $data;
+    }
+    
+    public function duyetbinhluan($idBL){
+        $sql = "UPDATE sanpham_comment SET kiem_duyet=1 WHERE id_comment=$idBL";
+        if(!$result = $this->db->query($sql)) die($sql);
+        echo "duyet thanh cong";
+    }
+    
+    public function suabinhluan($idBL){
+        $hoten = $this->db->escape_string($_POST['hoten']);
+        $email = $this->db->escape_string($_POST['email']);
+        $noidung = $this->db->escape_string($_POST['noidung']);
+        $noidung = nl2br($noidung);
+        
+        $sql = "UPDATE sanpham_comment SET hoten='$hoten', email='$email', noidung='$noidung' WHERE id_comment=$idBL";
+        if(!$result = $this->db->query($sql)) die($sql);
+    }
+    
+    public function xoabinhluan($idBL){
+        $sql = "DELETE FROM sanpham_comment WHERE id_comment=$idBL";
+        if(!$result = $this->db->query($sql)) die($sql);
     }
     
     public function layuser($idUser = 0){
@@ -354,29 +436,6 @@ class quantri extends sp{
         $input = $this->db->escape_string($input);
         $input = trim($input);
         return $input;
-    }
-    
-    protected function changeTitle($str){
-        $unicode = array(
-            'a'=>'á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ', 'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ằ|Ẳ|Ẵ|Ặ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
-            'd'=>'đ','D'=>'Đ',
-            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ', 'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
-            'i'=>'í|ì|ỉ|ĩ|ị', 'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
-            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ', 'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
-            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự', 'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
-            'y'=>'ý|ỳ|ỷ|ỹ|ỵ', 'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ'
-        );
-        
-        foreach($unicode as $khongdau => $codau){
-            $arr = explode("|", $codau);
-            $str = str_replace($arr, $khongdau, $str);
-        }
-        $str = str_replace(array('?', '&', '+', '%', "'", '"','\''), "", $str);
-        $str = trim($str);
-        while(strpos($str, '  ') > 0) $str = str_replace("  ", " ", $str);
-        $str = mb_convert_case($str, MB_CASE_LOWER, 'utf-8');
-        $str = str_replace(" ", "-", $str);
-        return $str;
     }
     
 }

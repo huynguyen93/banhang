@@ -1,13 +1,13 @@
-<?php
+<?php require_once("classDB.php");
     
-class sp{
+class sp extends db{
     public $db;
     
     function __construct(){
-        $this->db = new mysqli('localhost', 'root', '', 'tm');
-        $this->db->set_charset("utf8") or die("ket noi database that bai");
+        parent::__construct();
     }
     
+    //lấy danh sách chủng loại
     public function laydschungloai(){
         $sql = "select * from chungloai where AnHien=1 order by ThuTu";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
@@ -18,48 +18,10 @@ class sp{
         return $data;
     }
     
+    //lấy danh sách loại sản phẩm
     public function laydsloaisp($idCL){
         $sql = "select * from loaisp where idCL=$idCL and AnHien=1";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
-        $data = array();
-        while($row = $result->fetch_assoc()){
-            $data[] = $row;
-        }
-        return $data;
-    }
-    
-    public function laytenloaitheoid($idloai){
-        if($idloai <= 0) header('location: index.php');
-        if(!$result = $this->db->query("select TenLoai from loaisp where idLoai=$idloai")) die("loi ket noi");
-        if($result->num_rows < 1) header('location: index.php');
-        $row = $result->fetch_array();
-        return $row[0];
-    }
-    
-    public function laysptheogia($min = 0, $max = 0, $order = 'desc', &$totalrows){
-        
-        if($min < 0 || $max < 0){
-            echo "khong tim thay san pham phu hop";
-            return false;
-        }
-        
-        if($max >0 && $min > $max){
-            echo "<h4>khong tim thay san pham</h4>";
-            return false;
-        }
-        
-        if($max == 0) $sql = "select * from sanpham where Gia>=$min order by Gia $order";
-          else $sql = "select * from sanpham where Gia>=$min and Gia<$max order by Gia $order";
-        
-        if(!$result = $this->db->query($sql)) die("loi ket noi");
-        
-        if($result->num_rows < 1){
-            echo "<h4>khong tim thay san pham</h4>";
-            return false;
-        }
-        
-        $totalrows = $result->num_rows;
-        
         $data = array();
         while($row = $result->fetch_assoc()){
             $data[] = $row;
@@ -75,14 +37,14 @@ class sp{
         
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         
-        if($result->num_rows < 1) header('location: index.php');
+        if($result->num_rows < 1) return false;
         
         $data = $result->fetch_assoc();
         return $data;
     }
     
-    public function layid10spmoi($idCL){
-        $sql = "select idSP from sanpham WHERE idCL=$idCL order by NgayCapNhat DESC LIMIT 0,10";
+    public function layidspmoi($idCL, $sosp){
+        $sql = "select idSP from sanpham WHERE idCL=$idCL order by NgayCapNhat DESC LIMIT 0,$sosp";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         
         if($result->num_rows < 1) header('location: index.php');
@@ -95,8 +57,27 @@ class sp{
     }
     
     public function laythuoctinhsp($idSP){
-        $sql = "select * from sanpham_thuoctinh where idSP=$idSP";
+        $sql = "select tinh_nang_noi_bat from sanpham_thuoctinh where idSP=$idSP";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $data = $result->fetch_row();
+        return $data[0];        
+    }
+    
+    public function laysptuongduong($idCL, $idSP, $phantram=10, $sosanpham=10){
+        
+        //lấy giá sản phẩm hiện tại
+        $sql = "SELECT Gia FROM sanpham WHERE idCL=$idCL AND idSP=$idSP";
+        if(!$result = $this->db->query($sql)) die("loi ket noi sp tuong duong");
+        $row = $result->fetch_row();
+        $gia = $row[0];
+        
+        //tính mức giá chênh lệch
+        $min = $gia*(100-$phantram)/100;
+        $max = $gia*(100+$phantram)/100;
+        
+        //lấy các sản phẩm theo giá tương đương:
+        $sql = "SELECT idSP, TenSP, Gia, urlHinh FROM sanpham WHERE idCL=$idCL AND Gia >=$min AND Gia <=$max AND idSP<>$idSP ORDER BY Gia DESC LIMIT 0,$sosanpham";
+        if(!$result = $this->db->query($sql)) die("loi ket noi sp tuong duong");
         $data = array();
         while($row = $result->fetch_assoc()){
             $data[] = $row;
@@ -104,28 +85,9 @@ class sp{
         return $data;        
     }
     
-    public function laysptuongduong($gia, $phantram=5){
-        $min = $gia*(100-$phantram)/100;
-        $max = $gia*(100+$phantram)/100;
-        return $this->laysptheogia($min, $max, $totalrows);
-    }
-    
-    public function laysptheoloai($idloai, &$totalrows, $current_page=1, $per_page=5){
-        if($idloai <= 0) header('location: index.php');
-        
-        if(!$result = $this->db->query("select count(*) from sanpham where idLoai=$idloai")) die("loi ket noi");
-        if($result->num_rows < 1) header('location: index.php');
-        $row = $result->fetch_array();
-        $totalrows = $row[0];
-        
-        if($current_page < 1) $current_page=1;
-        
-        $start = ceil($current_page-1)*$per_page;
-        
-        if(!$result = $this->db->query("select * from sanpham where idLoai=$idloai order by Gia desc limit $start, $per_page")) die("loi ket noi");
-        
-        if($result->num_rows < 1) header('location: index.php');
-        
+    public function layhinhsp($idSP){
+        $sql = "SELECT urlHinh FROM sanpham_hinh WHERE idSP=$idSP";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
         $data = array();
         while($row = $result->fetch_assoc()){
             $data[] = $row;
@@ -133,21 +95,47 @@ class sp{
         return $data;
     }
     
-    public function laysptheochungloai($idCL, $order='Gia DESC', &$totalrows, $current_page=1, $per_page=5){
-        if($idCL <= 0) header('location: index.php');
+    public function layvideo($idSP){
+        $sql = "SELECT value FROM sanpham_youtube WHERE idSP=$idSP";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    
+    public function laydssanpham($idCL, $idLoai, $gia, $order, &$totalrows, $current_page=1, $per_page=5){
+        settype($idCL, "int"); settype($idloai, "int");
         
-        if(!$result = $this->db->query("select count(*) from sanpham where idCL=$idCL")) die("loi ket noi");
-        if($result->num_rows < 1) header('location: index.php');
+        if($idCL == 0) return false;
+        if($idLoai == 0) $idLoai = ''; else $idLoai = "AND idLoai=$idLoai";
+        
+        
+        $min = 0; $max = 0;
+        $gia = explode("-", $gia);
+        if(count($gia) == 2){
+            $min = $gia[0]; $max = $gia[1];
+            settype($min, "int"); settype($max, "int");
+        }
+        if($min == 0) $min = ''; else $min = "AND Gia>=$min";
+        if($max == 0) $max = ''; else $max = "AND Gia <=$max";
+        
+        $this->db->escape_string($order);
+        if($order == 'giatangdan') $order = 'Gia ASC';
+        elseif($order == 'spmoi') $order = 'NgayCapNhat DESC';
+        elseif($order == 'banchay') $order = 'SoLanMua DESC';
+        else $order = 'Gia DESC';
+        
+        $sql = "SELECT count(idSP) FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order";
+        if(!$result = $this->db->query($sql)) die("loi ket noi das");
+        if($result->num_rows < 1) echo $sql;
         $row = $result->fetch_array();
         $totalrows = $row[0];
         
         if($current_page < 1) $current_page=1;
-        
         $start = ceil($current_page-1)*$per_page;
         
-        if(!$result = $this->db->query("select * from sanpham where idCL=$idCL order by $order limit $start, $per_page")) die("loi ket noi");
-        
-        if($result->num_rows < 1) header('location: index.php');
+        $sql = "SELECT idCL, idLoai, idSP, TenSP, Gia, urlHinh, SoLanMua FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order limit $start, $per_page";
+        if(!$result = $this->db->query($sql)) die("loi ket noi da");
+        if($result->num_rows < 1) echo "ko co san pham phu hop";
         
         $data = array();
         while($row = $result->fetch_assoc()){
@@ -207,17 +195,198 @@ class sp{
             $_SESSION['sanpham'][$k]['name'] = $sanpham['TenSP'];
             $_SESSION['sanpham'][$k]['price'] = $sanpham['Gia'];
         }
+        
+        $tongsanpham = 0;
+        for($i=0; $i<count($_SESSION['sanpham']); $i++){
+            $tongsanpham += $_SESSION['sanpham'][$i]['quantity'];
+        }
 
-        header("Location: index.php?action=chitiet&idsp={$idsp}");
+        echo $tongsanpham;
     }
     
-    protected function int($input){
-        settype($input, "int");
-        return $input;
+    public function capnhatgiohang(){
+        for($i=0; $i<count($_SESSION['sanpham']); $i++){
+            $_SESSION['sanpham'][$i]['quantity'] = $_GET['soluong'.$i];
+        }
+        header("location: index.php?action=xemdonhang");
     }
     
-    protected function redirect($url){
-        header("Location: $url");
+    public function xoaspkhoigiohang($id){
+        for($i=$id; $i<(count($_SESSION['sanpham'])-1); $i++){
+            $j= $i+1;
+            $_SESSION['sanpham'][$i] = $_SESSION['sanpham'][$j];
+        }
+        unset($_SESSION['sanpham'][(count($_SESSION['sanpham'])-1)]);
+        header("location: index.php?action=xemdonhang");
     }
+    
+    public function layPTGH(){
+        $sql = "SELECT * FROM phuongthucgiaohang ORDER BY ThuTU";
+        if(!$result = $this->db->query($sql)) die("lỗi kết nối, vui lòng thử lại");
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function layPTTT(){
+        $sql = "SELECT * FROM phuongthucthanhtoan ORDER BY ThuTU";
+        if(!$result = $this->db->query($sql)) die("lỗi kết nối, vui lòng thử lại");
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function layformthanhtoan($pttt){
+        $sql = "SELECT Code FROM phuongthucthanhtoan WHERE idPTTT='$pttt' ORDER BY ThuTU";
+        if(!$result = $this->db->query($sql)) die("lỗi kết nối, vui lòng thử lại");
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    
+    public function dathang(){
+        $idUser = 0;
+        if(isset($_SESSION['user_id'])) $idUser = $_SESSION['user_id'];
+        
+        $ThoiDiemDatHang = date("Y-m-d H:i:s", time());
+        
+        $TenNguoiNhan = trim($_POST['HoTen']);
+        $TenNguoiNhan = $this->db->escape_string($TenNguoiNhan);
+        
+        $DTNguoiNhan = trim($_POST['DienThoai']);
+        $DTNguoiNhan = $this->db->escape_string($DTNguoiNhan);
+        
+        $DiaChi = trim($_POST['DiaChi']);
+        $DiaChi = $this->db->escape_string($DiaChi);
+        
+        settype($_POST['TongTien'], "int");
+        $TongTien = $_POST['TongTien'];
+        
+        $idPTTT = $_POST['PTTT'];
+        
+        $idPTGH = $_POST['PTGH'];
+        
+        $tax = $TongTien*0.1;
+        
+        $GhiChu = trim($_POST['GhiChu']);
+        $GhiChu = $this->db->escape_string($GhiChu);
+        
+        $sql = "INSERT INTO donhang VALUES(null, $idUser, '$ThoiDiemDatHang', '$TenNguoiNhan', 
+                '$DTNguoiNhan', '$DiaChi', $TongTien, '$idPTTT', '$idPTGH', $tax, 
+                0, 0, '$GhiChu', 0)";
+        if(!$result = $this->db->query($sql)) die($sql);
+        $idDH = $this->db->insert_id;
+        
+        for($i=0; $i < count($_SESSION['sanpham']); $i++){
+            $sql = "INSERT INTO donhangchitiet VALUES(null, $idDH, {$_SESSION['sanpham'][$i]['idsp']},
+                    '{$_SESSION['sanpham'][$i]['name']}', '{$_SESSION['sanpham'][$i]['quantity']}',
+                    {$_SESSION['sanpham'][$i]['price']})";
+            if(!$result = $this->db->query($sql)) die("lỗi kết nối, vui lòng thử lại");
+        }
+        unset($_SESSION['sanpham']);
+        
+        header("location: index.php?action=thanhcong");
+    }
+    
+    public function laydsbinhluan($idSP){
+        $sql = "SELECT hoten, noidung, ngay_comment FROM sanpham_comment WHERE idSP=$idSP AND kiem_duyet=1 ORDER BY id_comment";
+        if(!$result = $this->db->query($sql)) die($sql);
+        
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function binhluan(){
+        $hoten = strip_tags($_POST['hoten']);
+        $hoten = $this->db->escape_string($hoten);
+        $hoten = trim($hoten);
+        
+        if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)==false) return false;
+        $email = strip_tags($_POST['email']);
+        $email = $this->db->escape_string($email);
+        $email = trim($email);
+        
+        $noidung = strip_tags($_POST['noidung']);
+        $noidung = $this->db->escape_string($noidung);
+        $noidung = trim($noidung);
+        $noidung = nl2br($noidung);
+        
+        $ngay = date("Y-m-d", time());
+        
+        $sql = "INSERT INTO sanpham_comment (idSP, hoten, email, noidung, ngay_comment)
+                VALUES ({$_POST['idSP']}, '$hoten', '$email', '$noidung', '$ngay')";
+        if(!$result = $this->db->query($sql)) die($sql);
+        header("location: index.php?chungloai={$_POST['chungloai']}&loaisp={$_POST['loaisp']}&idSP={$_POST['idSP']}#binhluan");
+    }
+    
+//    public function test(){
+//        $sql = "select idSP FROM sanpham";
+//        $result = $this->db->query($sql);
+//        while($row = $result->fetch_row()){
+//            $listID[] = $row[0];
+//        }
+//        
+//        foreach($listID as $idSP){
+//            $sql = "INSERT INTO sanpham_comment (idSP, hoten, email, noidung, ngay_comment)
+//                VALUES ($idSP, 'teo', 'teo@yahoo.com', 'test comment test comment test comment test comment test comment test comment test comment test comment test comment test comment ', '2016-05-09')";
+//            $this->db->query($sql);
+//        }
+//    }
+    
+//    public function gia(){
+//        $sql = "select idSP from sanpham";
+//        $result = $this->db->query($sql);
+//        
+//        $ids = array();
+//        while($row= $result->fetch_row()){
+//            $ids[] = $row[0];
+//        }
+//        
+//        foreach($ids as $idSP){
+//            $num = rand(5, 200);
+//            $gia = $num*100000;
+//            $sql = "update sanpham set Gia=$gia where idSP=$idSP";
+//            $this->db->query($sql);
+//        }
+//    }
+    
+    public function solanxem(){
+        $sql = "select idSP from sanpham";
+        $result = $this->db->query($sql);
+        
+        $ids = array();
+        while($row= $result->fetch_row()){
+            $ids[] = $row[0];
+        }
+        
+        foreach($ids as $idSP){
+            $num = rand(777, 33333);
+            $sql = "update sanpham set SoLanXem=$num where idSP=$idSP";
+            $this->db->query($sql);
+        }
+    }
+    
+//    public function ngay(){
+//        $sql = "select idSP from sanpham";
+//        $result = $this->db->query($sql);
+//        
+//        $ids = array();
+//        while($row= $result->fetch_row()){
+//            $ids[] = $row[0];
+//        }
+//        
+//        foreach($ids as $idSP){
+//            $ngay = rand(1388530800, 1464732000);
+//            $ngaycapnhat = date('Y-m-d', $ngay);
+//            $sql = "update sanpham set NgayCapNhat='$ngaycapnhat' where idSP=$idSP";
+//            $this->db->query($sql);
+//        }
+//    }
     
 }

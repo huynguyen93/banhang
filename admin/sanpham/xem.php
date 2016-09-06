@@ -37,9 +37,6 @@
 
 <?php
 if($k==1) $idLoai = $_GET['idLoai'];
-$per_page = 10;
-$current_page = 1;
-if(isset($_GET['page'])) $current_page = $_GET['page'];
 
 $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_page);
 
@@ -61,7 +58,7 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
         <td><?php echo $row['TenSP'];?></td>
         <td><?php echo $row['SoLanMua'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
-        <td><a href="index.php?c=sanpham&a=sua&idSP=<?php echo $row['idSP'];?>">Sửa</a> / <a href="index.php?c=sanpham&a=xoa&idSP=<?php echo $row['idSP'];?>">Xóa</a></td>
+        <td><a href="index.php?a=sanpham-sua&idSP=<?php echo $row['idSP'];?>">Sửa</a> / <a href="index.php?a=sanpham-xoa&idSP=<?php echo $row['idSP'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>
@@ -69,7 +66,7 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
     <?php
     
     $url = "http://localhost/banhang/admin/index.php?c=$c&a=$a&idCL=$idCL&idLoai=$idLoai";
-    $pages_per_group = 5;
+    
     
     echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group); ?>
 </div>
