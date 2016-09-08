@@ -1,50 +1,5 @@
-<h2 class="">Sản phẩm </h2>
+<h2 class="">Danh sách users </h2>
 
-<form method="get" action="" class="form-inline" style="margin: 10px 0px;">
-    <input type="hidden" name="c" value="<?php echo $c;?>">
-    <input type="hidden" name="a" value="<?php echo $a;?>">
-    <div class="form-group" style="margin-right: 20px;">
-        <label for="idCL">Chủng loại</label>
-        <select name="idCL" class="form-control" onchange="this.form.submit()">
-            <?php $listchungloai = $qt->laychungloai(0);
-			$i = 0; $k = 0;
-            foreach($listchungloai as $chungloai){
-				if($i == 0){$idCL = $chungloai['idCL']; $i++;}
-            ?>
-            <option value="<?php echo $chungloai['idCL'] ?>" <?php if(isset($_GET['idCL']) && $_GET['idCL'] == $chungloai['idCL']){ echo "selected"; $k=1;}?>><?php echo $chungloai['TenCL'];?></option>
-            <?php }?>
-        </select>
-    </div>
-    
-    <div class="form-group" style="margin-right: 20px;">
-        <label for="idCL">Loại sản phẩm</label>
-        <select name="idLoai" class="form-control" onchange="this.form.submit()">
-        	<option value="0">Tất cả các loại</option>
-            <?php 
-			if($k == 1) $idCL = $_GET['idCL'];
-			$listloaisp = $qt->layloaisptheochungloai($idCL);
-			$idLoai = 0; $k = 0;
-            foreach($listloaisp as $loaisp){
-            ?>
-            <option value="<?php echo $loaisp['idLoai'];?>" <?php if(isset($_GET['idLoai']) && $_GET['idLoai'] == $loaisp['idLoai']){echo "selected"; $k=1;}?>><?php echo $loaisp['TenLoai'];?></option>
-            <?php }?>
-        </select>
-    </div>
-    <div class="form-group" style="margin-right: 20px;">
-        <label id="getrows">Chủng loại</label>
-    </div>
-</form>
-
-<?php
-if($k==1) $idLoai = $_GET['idLoai'];
-$per_page = 10;
-$current_page = 1;
-if(isset($_GET['page'])) $current_page = $_GET['page'];
-
-$listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_page);
-
-?>
-<label id="sendrows">(<?php echo $totalrows; ?> sản phẩm)</label>
 <table class="table table-striped" style="margin-bottom: 0px;">
     <thead>
         <tr>
@@ -65,17 +20,3 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
     </tr>
     <?php }?>
 </table>
-<div class="row">
-    <?php
-    
-    $url = "http://localhost/banhang/admin/index.php?c=$c&a=$a&idCL=$idCL&idLoai=$idLoai";
-    $pages_per_group = 5;
-    
-    echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group); ?>
-</div>
-<script>
-    $(document).ready(function(){
-        $("#getrows").html($("#sendrows").html());
-        $("#sendrows").remove();
-    });
-</script>

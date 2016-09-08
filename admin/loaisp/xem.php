@@ -1,7 +1,7 @@
-<?php 
+<?php
+$idCL = isset($_POST['idCL']) ? $_POST['idCL'] : 0;
 
-if(isset($_POST['idCL'])) $listloaisp = $qt->layloaisptheochungloai($_POST['idCL']);
-  else $listloaisp = $qt->layloaisp(0);
+$listloaisp = $qt->layloaisp($idCL);
 
 ?>
 <h2 class="">Loại sản phẩm </h2>
@@ -10,6 +10,7 @@ if(isset($_POST['idCL'])) $listloaisp = $qt->layloaisptheochungloai($_POST['idCL
     <div class="form-group">
         <label for="idCL">Chủng loại</label>
         <select name="idCL" class="form-control" onchange="this.form.submit()">
+            <option value="0">Tất cả chủng loại</option>
             <?php $listchungloai = $qt->laychungloai(0);
             foreach($listchungloai as $chungloai){
             ?>
@@ -22,22 +23,22 @@ if(isset($_POST['idCL'])) $listloaisp = $qt->layloaisptheochungloai($_POST['idCL
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>idCL</th>
+            <th>STT</th>
+            <?php if($idCL==0) echo "<th>Chủng loại</th>"; ?>
             <th>Tên</th>
             <th>Thứ tự</th>
             <th>Ẩn/Hiện</th>
-            <th><a class="btn btn-sm btn-success btn-them" href="index.php?c=loaisp&a=them"><span class="glyphicon glyphicon-plus"></span>Thêm mới</a></th>
+            <th><a class="btn btn-sm btn-success btn-them" href="index.php?a=loaisp-them"><span class="glyphicon glyphicon-plus"></span>Thêm mới</a></th>
         </tr>
     </thead>
-    <?php foreach($listloaisp as $row){?>
+    <?php $i=1; foreach($listloaisp as $row){?>
     <tr>
-        <td><?php echo $row['idLoai'];?></td>
-        <td><?php echo $row['idCL'];?></td>
+        <td><?php echo $i++;?></td>
+        <?php if($idCL==0) echo "<td>".$qt->laytenchungloai($row['idCL'])."</td>";?>
         <td><?php echo $row['TenLoai'];?></td>
         <td><?php echo $row['ThuTu'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
-        <td><a href="index.php?c=loaisp&a=sua&idLoai=<?php echo $row['idLoai'];?>">Sửa</a> / <a href="index.php?c=loaisp&a=xoa&idLoai=<?php echo $row['idLoai'];?>">Xóa</a></td>
+        <td><a href="index.php?a=loaisp-sua&idLoai=<?php echo $row['idLoai'];?>">Sửa</a> / <a href="index.php?a=loaisp-xoa&idLoai=<?php echo $row['idLoai'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>

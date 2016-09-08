@@ -4,7 +4,7 @@ $u->taocaptcha();
 
 ?>
 
-<div id="user-area">
+<div id="user-area" >
     <a href="#" id="dangnhap">Đăng nhập</a> / <a href="#" id="dangky">Đăng ký</a>
 </div>
 
@@ -38,7 +38,7 @@ $u->taocaptcha();
                 type: "post",
                 data: $("#formdangky").serialize()+"&action=dangky",                
                 success: function(data){
-                    if(data== 'OK'){
+                    if(data == 'OK'){
                         $("#content").html("<h2>Đăng ký thành công!</h2> <p><a href='#' id='chuyendangnhap'>Đăng nhập<a></p>");
                     } else{
                         $("#error").html(data);

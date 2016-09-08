@@ -1,4 +1,4 @@
-<div class="panel panel-default" id="div-giohang">
+<div class="panel panel-default" style="">
     <div class="panel-body">
         <div class="row">
             <div class="col-md-8">
@@ -28,7 +28,7 @@
                         <td class="text-center"><input class="soluong" style="width:50px; text-align:center" type="text" name="soluong<?php echo $i?>" value="<?php echo number_format($_SESSION['sanpham'][$i]['quantity'], 0, ',', '.');?>"></td>
                         <td class="text-right"><?php echo number_format($_SESSION['sanpham'][$i]['price']);?></td>
                         <td class="text-right"><?php echo number_format($_SESSION['sanpham'][$i]['price']*$_SESSION['sanpham'][$i]['quantity'],0, ',', '.');?>đ</td>
-                        <td class="text-center"><a class="text-danger" href="process.php?xoasanpham=<?php echo $i;?>">Xóa</a></td>
+                        <td class="text-center"><a class="text-danger" href="process.php?xoasanpham=<?php echo $i;?>">Xóa <i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                     <?php
                         $tong += $_SESSION['sanpham'][$i]['price']*$_SESSION['sanpham'][$i]['quantity'];

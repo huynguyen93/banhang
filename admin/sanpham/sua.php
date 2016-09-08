@@ -31,7 +31,7 @@ $sanpham = $qt->laysptheoid($_GET['idSP']);
         
         <div class="form-group" >
             <label for="idCL">Loại sản phẩm</label>
-            <input type="hidden" id="idLoai" value="<?php echo $sanpham['idLoai'];?>">
+            <input type="hidden" id="idLoai" value="<?php if(isset($_POST['idLoai'])) echo $_POST['idLoai']; else echo $sanpham['idLoai'];?>">
             <select name="idLoai" class="form-control" id="loaisp">
                 <option value="0">Chọn loại sản phẩm</option>
             </select>
@@ -39,17 +39,17 @@ $sanpham = $qt->laysptheoid($_GET['idSP']);
         
         <div class="form-group">
             <label for="TenSP">Tên sản phẩm</label>
-            <input type="text" name="TenSP" class="form-control" value="<?php echo $sanpham['TenSP'];?>">
+            <input type="text" name="TenSP" class="form-control" value="<?php if(isset($_POST['TenSP'])) echo $_POST['TenSP']; else echo $sanpham['TenSP'];?>">
         </div>
         
         <div class="form-group">
             <label for="Gia">Giá</label>
-            <input type="text" name="Gia" class="form-control" value="<?php echo $sanpham['Gia'];?>">
+            <input type="text" name="Gia" class="form-control" value="<?php if(isset($_POST['Gia'])) echo $_POST['Gia']; else echo $sanpham['Gia'];?>">
         </div>
         
         <div class="form-group">
             <label for="SoLuongTonKho">Số sản phẩm trong kho</label>
-            <input type="text" name="SoLuongTonKho" class="form-control" value="<?php echo $sanpham['SoLuongTonKho'];?>">
+            <input type="text" name="SoLuongTonKho" class="form-control" value="<?php if(isset($_POST['SoLuongTonKho'])) echo $_POST['SoLuongTonKho']; else echo $sanpham['SoLuongTonKho'];?>">
         </div>
         
         
@@ -60,7 +60,7 @@ $sanpham = $qt->laysptheoid($_GET['idSP']);
             <label for="AnHien">Trạng thái</label>
             <select name="AnHien" class="form-control">
                 <option value="0">Ẩn</option>
-                <option value="1" <?php if($sanpham['AnHien'] == 1)echo "selected";?>>Hiện</option>
+                <option value="1" <?php if(isset($_POST['AnHien']) && $_POST['AnHien']==1) echo "selected"; elseif($sanpham['AnHien'] == 1)echo "selected";?>>Hiện</option>
             </select>
         </div>
         
@@ -74,20 +74,17 @@ $sanpham = $qt->laysptheoid($_GET['idSP']);
         
         <div class="form-group">
             <label for="GhiChu">Ghi chú</label>
-            <textarea name="GhiChu" class="form-control" rows="2"><?php echo $sanpham['GhiChu'];?></textarea>
+            <textarea name="GhiChu" class="form-control" rows="2"><?php if(isset($_POST['GhiChu'])) echo $_POST['GhiChu']; else echo $sanpham['GhiChu'];?></textarea>
         </div>
-        
-        
-        
         
     </div>
         <div class="form-group"  style="clear:both;">
             <label for="MoTa">Mô tả</label>
-            <textarea  class="tinymce form-control" name="MoTa" rows="5"><?php echo $sanpham['MoTa'];?></textarea>
+            <textarea  class="tinymce form-control" name="MoTa" rows="5"><?php if(isset($_POST['MoTa'])) echo $_POST['MoTa']; else echo $sanpham['MoTa'];?></textarea>
         </div>
         <div class="form-group">
             <label for="baiviet">Bài viết</label>
-            <textarea class="tinymce form-control" name="baiviet" class="form-control" rows="15"><?php echo $sanpham['baiviet'];?></textarea>
+            <textarea class="tinymce form-control" name="baiviet" class="form-control" rows="15"><?php if(isset($_POST['baiviet'])) echo $_POST['baiviet']; else echo $sanpham['baiviet'];?></textarea>
         </div>
         <div class="form-group" >
             <input type="submit" name="suasanpham" class="btn btn-primary" />

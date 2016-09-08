@@ -9,8 +9,7 @@ $idCL = 1; if(isset($_GET['chungloai'])) $idCL = $_GET['chungloai'];
 $idLoai = 0; if(isset($_GET['loaisp'])) $idLoai = $_GET['loaisp'];
 
 //phan trang san pham:
-if(isset($_GET['page'])) $current_page = $_GET['page'];
-  else $current_page = 1;
+$current_page = 1; if(isset($_GET['page'])) $current_page = $_GET['page'];
 $per_page = 30;
 $pages_per_group = 5;
 
@@ -28,7 +27,7 @@ $u = new user;
 </head>
     
 <body>
-    <div class="container">
+    <div class="container" id="container">
         <div class="header row">
             <?php include("sanpham_chungloai.php"); ?>
         </div>
@@ -61,6 +60,17 @@ $u = new user;
         <?php require_once("footer.php");?>
     </div>
     <script>
+        $(document).ready(function(){
+            var bodyheight = $("html").height();
+            var containerheight = $("#container").height();
+            var footerheight = $("#footer").height();
+//            alert("container:"+containerheight + "footer:"+footerheight);
+            if(containerheight < bodyheight-footerheight){
+                $("#container").height(bodyheight-footerheight);
+            }
+        });
+        
+        
         function themvaogiohang(){
             $.ajax({
                 url: 'process.php',

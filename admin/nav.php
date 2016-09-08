@@ -32,7 +32,7 @@ if(isset($_GET['a'])) {$array = explode('-', $_GET['a']); $action=$array[0];}
             <li><a href="index.php?a=sanpham-them">Thêm mới</a></li>
         </ul>
     </li>
-    <li>
+    <li class="<?php if(isset($_GET['a']) && $action == 'binhluan') echo 'active'; ?>">
         <a href="#">Bình luận <span class="caret"></span></a>
         <ul class="">
             <li><a href="index.php?a=binhluan-duyet">Chờ xét duyệt</a></li>
@@ -53,7 +53,7 @@ if(isset($_GET['a'])) {$array = explode('-', $_GET['a']); $action=$array[0];}
             <li><a href="#">Thêm mới</a></li>
         </ul>
     </li>
-    <li><a href="#">Logout</a></li>
+    <li><a href="../process.php?action=thoat">Logout</a></li>
 </ul>
 <script>
     $(document).ready(function(){

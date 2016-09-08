@@ -1,8 +1,6 @@
 <?php
-if(!isset($_GET['idSP'])) header("location: index.php?c=sanpham&a=xem");
-
 settype($_GET['idSP'], "int");
 
-if($_GET['idSP'] == 0) header("location: index.php?c=sanpham&a=xem");
+if(!isset($_GET['idSP']) || $_GET['idSP'] < 1) header("location: index.php?a=sanpham-xem");
 
 $qt->xoasanpham($_GET['idSP']);

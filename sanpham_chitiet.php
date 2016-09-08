@@ -17,7 +17,7 @@ if($sanpham == false) return false;
         <p><?php echo nl2br($sanpham['MoTa']);?></p>
         <p>Còn <b><?php echo $sanpham['SoLuongTonKho'];?></b> sản phẩm</p>
         <a idsp="<?php echo $_GET['idSP'];?>" class="btn btn-success btn-lg btn-block" id="themvaogiohang">Thêm vào giỏ hàng <i class="glyphicon glyphicon-ok" id="plus"></i></a>
-        <button class="btn btn-default btn-lg btn-block" style="margin-top:10px;">Đặt mua sản phẩm này</button>
+        <a href="index.php?action=xemdonhang" id="xemgiohang" class="btn btn-default btn-lg btn-block" style="margin-top:10px;" <?php if(count($_SESSION['sanpham'])==0) echo "disabled";?>>Kiểm tra giỏ hàng</a>
         </div>
     </div>
     
@@ -75,6 +75,7 @@ if($sanpham == false) return false;
             setTimeout(function(){
                 $("#plus").css('opacity', '0');
                 $("#cart").css({'font-size': '25px', 'color':'#140044'});
+                $("#xemgiohang").removeAttr('disabled');
                 giohangtomtat();
             }, 1000);
         });

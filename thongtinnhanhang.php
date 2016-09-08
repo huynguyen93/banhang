@@ -1,5 +1,5 @@
 <?php
-
+if(count($_SESSION['sanpham']) == 0) header("location: index.php?action=xemdonhang");
 if(isset($_SESSION['user_id']))  $user = $u->get_info($_SESSION['user_id']);
 
 //tinh tong so tien:

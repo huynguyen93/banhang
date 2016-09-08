@@ -63,7 +63,6 @@ class user extends db{
     }
     
     public function dangky(){
-        header("location: index.php");
         if(empty($_POST['Email']) || empty($_POST['Password']) || empty($_POST['RePassword']) || empty($_POST['HoTen']) || empty($_POST['DiaChi']) || empty($_POST['DienThoai']) || empty($_POST['captcha']))
             die("Không được bỏ trống trường nào!");
         if($_POST['captcha'] != $_SESSION['captcha']) die("Nhập lại mã xác nhận");

@@ -37,10 +37,10 @@
 <div class="form-group">
     <select name="gia" class="" style="margin-right: 10px" onchange="this.form.submit();">
         <option value="all" <?php if(!isset($_GET['gia']) || $_GET['gia']=='all') echo "selected"; ?> >Mọi mức giá</option>
-        <option value="0-2000000" <?php if(isset($_GET['gia']) && $_GET['gia']=='0-20000000') echo "selected"; ?>>Dưới 2 triệu</option>
-        <option value="2000000-6000000" <?php if(isset($_GET['gia']) && $_GET['gia']=='20000000-50000000') echo "selected"; ?>>2 - 6 triệu</option>
-        <option value="6000000-12000000" <?php if(isset($_GET['gia']) && $_GET['gia']=='50000000-100000000') echo "selected"; ?>>6 - 12 triệu</option>
-        <option value="12000000-0" <?php if(isset($_GET['gia']) && $_GET['gia']=='100000000-0') echo "selected"; ?>>Trên 12 triệu</option>
+        <option value="0-2000000" <?php if(isset($_GET['gia']) && $_GET['gia']=='0-2000000') echo "selected"; ?>>Dưới 2 triệu</option>
+        <option value="2000000-6000000" <?php if(isset($_GET['gia']) && $_GET['gia']=='2000000-6000000') echo "selected"; ?>>2 - 6 triệu</option>
+        <option value="6000000-12000000" <?php if(isset($_GET['gia']) && $_GET['gia']=='6000000-12000000') echo "selected"; ?>>6 - 12 triệu</option>
+        <option value="12000000-0" <?php if(isset($_GET['gia']) && $_GET['gia']=='12000000-0') echo "selected"; ?>>Trên 12 triệu</option>
     </select>
 </div>
     

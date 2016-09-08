@@ -1,4 +1,7 @@
-<?php require_once("classquantri.php");
+<?php 
+//if(!isset($_SESSION['user_group']) ||  $_SESSION['user_group'] != 1) header("Location: ../index.php");
+
+require_once("classquantri.php");
 
 $qt = new quantri();
 
@@ -6,10 +9,9 @@ $a = 'home';
 
 if(isset($_GET['a'])) $a = $_GET['a'];
 
-//config phân trang:
+//phân trang:
 $per_page = 10;
-$current_page = 1;
-if(isset($_GET['page'])) $current_page = $_GET['page'];
+$current_page = 1; if(isset($_GET['page'])) $current_page = $_GET['page'];
 $pages_per_group = 5;
 
 
@@ -21,18 +23,20 @@ $pages_per_group = 5;
 <link rel="stylesheet" href="../css/bootstrap.css"> 
 <link rel="stylesheet" href="../css/style.css">
 <script src="../js/jquery.js"></script>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'.tinymce' });</script>
 </head>
 <body>
     
 <div>
     <div class="row" style="height: 5px; background: #222; margin: 0; padding:0;"></div>
     <div class="row" style="margin:0;">
-        <nav class="col-md-2" style="padding:0;">
+        <nav class="col-md-2" id="sidebar" style="padding:0;">
             <?php include("nav.php");?>
         </nav>
 
 
-        <div class="col-md-9 content">
+        <div class="col-md-9 content" id="content">
             <div style="padding-left:25px">
             <?php
             if($a == 'donhang-xem') require_once("donhang/xem.php");
@@ -59,13 +63,21 @@ $pages_per_group = 5;
             elseif($a == 'binhluan-xem') require_once("binhluan/xem.php");
             elseif($a == 'binhluan-sua') require_once("binhluan/sua.php");
             elseif($a == 'binhluan-xoa') require_once("binhluan/xoa.php");
+//            else  echo "<h2>Chào {$_SESSION['user_hoten']}!</h2>";
             ?>
+            <hr/>
             </div>
         </div>
 
     </div>
 </div>
 <script>
+    $(document).ready(function(){
+        var h = $("html").height();
+        var h2 = $("#content").height();
+        if(h2>h) $("nav#sidebar").height(h2);
+          else $("nav#sidebar").height(h);
+    });
     function xacnhan(){
         confirm("Bạn có chắc muốn xóa?");
     }

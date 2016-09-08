@@ -8,7 +8,7 @@ $thongtin = $qt->laythongtindonhang($_GET['idDH']);
 <div class="row" style="margin-bottom:0;">
 <div class="col-md-8">
 <h3>Bảng báo giá</h3>
-<table class="table table-striped">
+<table class="table table-striped" style="margin-bottom:0;">
     <thead>
         <th>STT</th>
         <th>Tên sản phẩm</th>
@@ -46,8 +46,57 @@ $thongtin = $qt->laythongtindonhang($_GET['idDH']);
         </tr>
     </tbody>
 </table>
-</div>
-</div>
-<div>
     <h3 style="margin-top:0;">Thông tin giao dịch</h3>
+    <table class="table table-striped" style="font-weight: bold">
+        <tr>
+            <td>Thời điểm đặt hàng:</td>
+            <td><?php echo date('H:i:s d-m-Y', strtotime($thongtin['ThoiDiemDatHang'])); ?></td>
+        </tr>
+        <tr>
+            <td>Tên người nhận:</td>
+            <td><?php echo $thongtin['TenNguoiNhan']; ?></td>
+        </tr>
+        <tr>
+            <td>SĐT người nhận:</td>
+            <td><?php echo $thongtin['DTNguoiNhan']; ?></td>
+        </tr>
+        <tr>
+            <td>Địa chỉ người nhận:</td>
+            <td><?php echo $thongtin['DiaChi']; ?></td>
+        </tr>
+        <tr>
+            <td>Phương thức thanh toán:</td>
+            <td><?php echo $thongtin['idPTTT']; ?></td>
+        </tr>
+        <tr>
+            <td>Phương thức giao hàng:</td>
+            <td><?php echo $thongtin['idPTGH']; ?></td>
+        </tr>
+        <tr>
+            <td>Tổng tiền hàng:</td>
+            <td><?php echo number_format($tong, 0, ',', '.'); ?> đ</td>
+        </tr>
+        <tr>
+            <td>Tiền thuế:</td>
+            <td><?php echo number_format($tong*0.1, 0, ',', '.');?> đ</td>
+        </tr>
+        <tr>
+            <td>Phí ship hàng:</td>
+            <td><?php echo $thongtin['Shipping'];?> đ</td>
+        </tr>
+        <tr>
+            <td>Tổng cộng:</td>
+            <td><?php echo number_format($tong*1.1+$thongtin['Shipping'], 0, ',', '.');?> đ</td>
+        </tr>
+        <tr>
+            <td>Ghi chú:</td>
+            <td><?php echo $thongtin['GhiChu']; ?></td>
+        </tr>
+    </table>
+</div>
+</div>
+<?php if($thongtin['DaXuLy'] == 0){ ?>
+<a href="process.php?huydonhang=<?php echo $_GET['idDH'];?>" class="btn btn-lg btn-default">HỦY ĐƠN HÀNG</a>
+<a href="process.php?duyetdonhang=<?php echo $_GET['idDH'];?>" class="btn btn-lg btn-success">ĐÃ XỬ LÝ XONG</a>
+<?php }?>
 </div>

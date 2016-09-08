@@ -1,8 +1,7 @@
 <h2 class="">Sản phẩm </h2>
 
 <form method="get" action="" class="form-inline" style="margin: 10px 0px;">
-    <input type="hidden" name="c" value="<?php echo $c;?>">
-    <input type="hidden" name="a" value="<?php echo $a;?>">
+    <input type="hidden" name="a" value="sanpham-xem">
     <div class="form-group" style="margin-right: 20px;">
         <label for="idCL">Chủng loại</label>
         <select name="idCL" class="form-control" onchange="this.form.submit()">
@@ -22,7 +21,7 @@
         	<option value="0">Tất cả các loại</option>
             <?php 
 			if($k == 1) $idCL = $_GET['idCL'];
-			$listloaisp = $qt->layloaisptheochungloai($idCL);
+			$listloaisp = $qt->layloaisp($idCL);
 			$idLoai = 0; $k = 0;
             foreach($listloaisp as $loaisp){
             ?>
@@ -46,15 +45,17 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
     <thead>
         <tr>
             <th>ID</th>
+            <?php if(!isset($_GET['idLoai']) || $_GET['idLoai']==0) echo "<th>Loại</th>";?>
             <th>Tên</th>
             <th>Số lần mua</th>
             <th>Ẩn/Hiện</th>
-            <th><a class="btn btn-sm btn-success btn-them" href="index.php?c=sanpham&a=them"><span class="glyphicon glyphicon-plus"></span>Thêm mới</a></th>
+            <th><a class="btn btn-sm btn-success btn-them" href="index.php?a=sanpham-them"><span class="glyphicon glyphicon-plus"></span>Thêm mới</a></th>
         </tr>
     </thead>
     <?php foreach($listsanpham as $row){?>
     <tr>
         <td><?php echo $row['idSP'];?></td>
+        <?php if(!isset($_GET['idLoai']) || $_GET['idLoai']==0) echo "<td>".$qt->laytenloaisp($row['idLoai'])."</td>";?>
         <td><?php echo $row['TenSP'];?></td>
         <td><?php echo $row['SoLanMua'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
@@ -62,10 +63,10 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
     </tr>
     <?php }?>
 </table>
-<div class="row">
+<div>
     <?php
     
-    $url = "http://localhost/banhang/admin/index.php?c=$c&a=$a&idCL=$idCL&idLoai=$idLoai";
+    $url = "http://localhost/banhang/admin/index.php?a=sanpham-xem&idCL=$idCL&idLoai=$idLoai";
     
     
     echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group); ?>

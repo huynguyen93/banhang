@@ -125,7 +125,7 @@ class sp extends db{
         else $order = 'Gia DESC';
         
         $sql = "SELECT count(idSP) FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order";
-        if(!$result = $this->db->query($sql)) die("loi ket noi das");
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
         if($result->num_rows < 1) echo $sql;
         $row = $result->fetch_array();
         $totalrows = $row[0];
@@ -134,8 +134,7 @@ class sp extends db{
         $start = ceil($current_page-1)*$per_page;
         
         $sql = "SELECT idCL, idLoai, idSP, TenSP, Gia, urlHinh, SoLanMua FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order limit $start, $per_page";
-        if(!$result = $this->db->query($sql)) die("loi ket noi da");
-        if($result->num_rows < 1) echo "ko co san pham phu hop";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
         
         $data = array();
         while($row = $result->fetch_assoc()){
@@ -356,21 +355,21 @@ class sp extends db{
 //        }
 //    }
     
-    public function solanxem(){
-        $sql = "select idSP from sanpham";
-        $result = $this->db->query($sql);
-        
-        $ids = array();
-        while($row= $result->fetch_row()){
-            $ids[] = $row[0];
-        }
-        
-        foreach($ids as $idSP){
-            $num = rand(777, 33333);
-            $sql = "update sanpham set SoLanXem=$num where idSP=$idSP";
-            $this->db->query($sql);
-        }
-    }
+//    public function solanxem(){
+//        $sql = "select idSP from sanpham";
+//        $result = $this->db->query($sql);
+//        
+//        $ids = array();
+//        while($row= $result->fetch_row()){
+//            $ids[] = $row[0];
+//        }
+//        
+//        foreach($ids as $idSP){
+//            $num = rand(777, 33333);
+//            $sql = "update sanpham set SoLanXem=$num where idSP=$idSP";
+//            $this->db->query($sql);
+//        }
+//    }
     
 //    public function ngay(){
 //        $sql = "select idSP from sanpham";

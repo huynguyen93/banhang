@@ -3,8 +3,6 @@ require_once("classSP.php"); $sp = new sp;
     
 require_once("classUser.php"); $u = new user;
 
-$sp->solanxem();
-
 if(isset($_GET['themvaogiohang'])) $sp->themspvaogiohang($_GET['themvaogiohang']);
 
 elseif(isset($_POST['guicomment'])) $sp->binhluan();

@@ -3,13 +3,13 @@
 ?>
 <div id="user-area">
     <?php
-    if($_SESSION['user_group'] == 0){
+    if($_SESSION['user_group'] == 1){
     ?>
-    <a href="admin/index.php" id="user">Quản trị</a>, <a href="#">Thoát</a>
+    <a href="admin/index.php" id="user">Quản trị</a>, <a href="process.php?action=thoat">Thoát</a>
     <?php
     }  else {
     ?>
-    <a href="#" id="user">Chào <?php echo $_SESSION['user_hoten'];?></a>
+    <a class="text-primary" href="#" id="user"><i class="glyphicon glyphicon-user"></i> Chào <?php echo $_SESSION['user_hoten'];?> </a>
     <?php
     }
     ?>
@@ -27,8 +27,8 @@
         <p><b>Email: </b><?php echo $user['Email']; ?></p>
         <p><b>Địa chỉ: </b><?php echo $user['DiaChi']; ?></p>
         <p><b>Số điện thoại: </b><?php echo $user['DienThoai']; ?></p>
-        <p><a href="#" id="formdoimatkhau">Đổi mật khẩu</a></p>
-        <p><a href="process.php?action=thoat" id="thoat">Thoát</a></p>
+        <p><a class="text-primary" href="#" id="formdoimatkhau">Đổi mật khẩu</a></p>
+        <p><a class="text-danger" href="process.php?action=thoat" id="thoat">Thoát</a></p>
     </div>
 </div>
 

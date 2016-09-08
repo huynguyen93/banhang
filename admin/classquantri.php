@@ -6,11 +6,16 @@ class quantri extends sp{
         parent::__construct();
     }
     
-    public function laydsdonhang($daxuly, &$totalrows){
-        $sql = "SELECT idDH, idUser, ThoiDiemDatHang, TenNguoiNhan, DTNguoiNhan, DiaChi, DaTraTien FROM donhang WHERE DaXuLy=$daxuly ORDER BY idDH DESC";
+    public function laydsdonhang($daxuly, &$totalrows, $current_page=1, $per_page=10){
+        $sql = "SELECT count(idDH) FROM donhang WHERE DaXuLy=$daxuly";
         if(!$result = $this->db->query($sql)) die("Loi ket noi");
-        $totalrows = $result->num_rows;
+        $row = $result->fetch_row();
+        $totalrows = $row[0];
         
+        $start = ($current_page-1)*$per_page;   
+        
+        $sql = "SELECT idDH, idUser, ThoiDiemDatHang, TenNguoiNhan, DTNguoiNhan, DiaChi, DaTraTien FROM donhang WHERE DaXuLy=$daxuly ORDER BY idDH DESC LIMIT $start, $per_page";
+        if(!$result = $this->db->query($sql)) die("Loi ket noi");
         $data = array();
         while($row = $result->fetch_assoc()){
             $data[] = $row;
@@ -36,10 +41,28 @@ class quantri extends sp{
         return $data;
     }
     
-    public function laychungloai($idCL=0, $AnHien=1){
+    public function duyetdonhang($idDH){
+        $sql = "UPDATE donhang SET DaXuLy=1 WHERE idDH=$idDH";
+        if(!$result= $this->db->query($sql)) die("Loi ket noi");
+        header("location: index.php?a=donhang-duyet");
+    }
+    
+    public function huydonhang($idDH){
+        $sql = "DELETE FROM donhang WHERE idDH=$idDH";
+        if(!$result= $this->db->query($sql)) die("Loi ket noi");
+        header("location: index.php?a=donhang-duyet");
+    }
+    
+    public function datratien($idDH){
+        $sql = "UPDATE donhang SET DaTraTien=1 WHERE idDH=$idDH";
+        if(!$result= $this->db->query($sql)) die("Loi ket noi");
+        header("location: index.php?a=donhang-xem");
+    }
+    
+    public function laychungloai($idCL=0){
         // $idCL == 0 -> lay het tat ca;
-        if($idCL > 0) $sql = "select * from chungloai where idCL=$idCL AND (AnHien=$AnHien OR $AnHien=-1)";
-          else $sql = "select * from chungloai WHERE AnHien=$AnHien OR $AnHien=-1";
+        if($idCL > 0) $sql = "select * from chungloai where idCL=$idCL";
+          else $sql = "select * from chungloai";
         
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $data = array();
@@ -50,76 +73,55 @@ class quantri extends sp{
     }
     
     public function themchungloai(){
+        $_POST['TenCL'] = trim($_POST['TenCL']);
+        $_POST['ThuTu'] = trim($_POST['ThuTu']);
         
-        if(!isset($_POST['TenCL'])){
-            $this->errors['TenCL'] = "Chưa nhập tên chủng loại!";
-            return false;
-        }
+        if(empty($_POST['TenCL'])) $this->errors['TenCL'] = "Không được bỏ trống trường này!";
+        if(empty($_POST['ThuTu'])) $this->errors['ThuTu'] = "Không được bỏ trống trường này!";
+        if(!is_numeric($_POST['ThuTu'])) $this->errors['ThuTu'] = "Trường này phải nhập số!";
         
-        if(!isset($_POST['ThuTu'])){
-            $this->errors['TenCL'] = "Chưa nhập thứ tự!";
-            return false;
-        }
+        if(count($this->errors) > 0) return false;
         
-        if($_POST['AnHien'] != 0 && $_POST['AnHien'] != 1){
-            return false;
-        }
-        
-        $ten = $this->validate($_POST['TenCL']);
-        settype($_POST['ThuTu']);
-        settype($_POST['AnHien']);
+        $ten = $this->db->escape_string($_POST['TenCL']);
         
         $sql = "INSERT INTO chungloai VALUES (null, '$ten', {$_POST['ThuTu']}, {$_POST['AnHien']})";
         if(!$result = $this->db->query($sql)) die($sql);
-        header("location: index.php?c=chungloai&a=xem");
+        header("location: index.php?a=chungloai-xem");
     }
     
     public function suachungloai($idCL){
-        if(!isset($_POST['TenCL'])){
-            $this->errors['TenCL'] = "Chưa nhập tên chủng loại!";
-            return false;
-        }
+        $_POST['TenCL'] = trim($_POST['TenCL']);
+        $_POST['ThuTu'] = trim($_POST['ThuTu']);
         
-        if(!isset($_POST['ThuTu'])){
-            $this->errors['TenCL'] = "Chưa nhập thứ tự!";
-            return false;
-        }
+        if(empty($_POST['TenCL'])) $this->errors['TenCL'] = "Không được bỏ trống trường này!";
+        if(empty($_POST['ThuTu'])) $this->errors['ThuTu'] = "Không được bỏ trống trường này!";
+        if(!is_numeric($_POST['ThuTu'])) $this->errors['ThuTu'] = "Trường này phải nhập số!";
         
-        if($_POST['AnHien'] != 0 && $_POST['AnHien'] != 1){
-            return false;
-        }
+        if(count($this->errors) > 0) return false;
         
-        $ten = $this->validate($_POST['TenCL']);
-        settype($_POST['ThuTu']);
-        settype($_POST['AnHien']);
+        $ten = $this->db->escape_string($_POST['TenCL']);
         
         $sql = "UPDATE chungloai SET TenCL='$ten', ThuTu={$_POST['ThuTu']}, AnHien={$_POST['AnHien']}  WHERE idCL=$idCL";
         if(!$result = $this->db->query($sql)) die($sql);
-        header("location: index.php?c=chungloai&a=xem");
+        header("location: index.php?a=chungloai-xem");
     }
     
     public function xoachungloai($idCL){
-        settype($idCL, "int");
-        $sql = "DELETE FROM chungloai  WHERE idCL=$idCL";
-        if(!$result = $this->db->query($sql)) die($sql);
-        header("location: index.php?c=chungloai&a=xem");
-    }
-	
-    public function layloaisp($idloai=0){
-        // $idCL == 0 -> lay het tat ca;
-        if($idloai > 0) $sql = "select * from loaisp where idLoai=$idloai";
-          else $sql = "select * from loaisp order by idCL";
-        
+        $sql = "DELETE FROM chungloai WHERE idCL=$idCL";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
-        $data = array();
-        while($row = $result->fetch_assoc()){
-            $data[] = $row;
-        }
-        return $data;
+        header("location: index.php?a=chungloai-xem");
     }
     
-    public function layloaisptheochungloai($idCL){
-        $sql = "select * from loaisp where idCL=$idCL";
+    public function laytenchungloai($idCL){
+        $sql = "SELECT TenCL FROM chungloai WHERE idCL=$idCL";
+        $result = $this->db->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    
+    public function layloaisp($idCL){
+        if($idCL == 0) $sql = "select * from loaisp order by idCL ";
+          else $sql = "select * from loaisp where idCL=$idCL";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $data = array();
         while($row = $result->fetch_assoc()){
@@ -129,69 +131,59 @@ class quantri extends sp{
     }
     
     public function themloaisp(){
+        $_POST['TenLoai'] = trim($_POST['TenLoai']);
+        $_POST['ThuTu'] = trim($_POST['ThuTu']);
         
-        if(!isset($_POST['TenLoai'])){
-            $this->errors['TenLoai'] = "Chưa nhập tên chủng loại!";
-            return false;
-        }
+        if(empty($_POST['TenLoai'])) $this->errors['TenLoai'] = "Không được bỏ trống trường này!";
+        if(!is_numeric($_POST['ThuTu'])) $this->errors['ThuTu'] = "Trường này phải nhập số!";
+        if(empty($_POST['ThuTu'])) $this->errors['ThuTu'] = "Không được bỏ trống trường này!";
         
-        if(!isset($_POST['ThuTu'])){
-            $this->errors['ThuTu'] = "Chưa nhập thứ tự!";
-            return false;
-        }
+        if(count($this->errors) > 0) return false;
         
-        if($_POST['AnHien'] != 0 && $_POST['AnHien'] != 1){
-            return false;
-        }
+        $ten = $this->db->escape_string($_POST['TenLoai']);
         
-        settype($_POST['idCL'], "int");
-        settype($_POST['AnHien'], "int");
-        
-        $idCL = $_POST['idCL'];
-        $ten = $this->validate($_POST['TenLoai']);
-        $thutu = $this->validate($_POST['ThuTu']);
-        $anhien = $_POST['AnHien'];
-        
-        $sql = "INSERT INTO loaisp VALUES (null, $idCL, '$ten', $thutu, $anhien)";
+        $sql = "INSERT INTO loaisp VALUES (null, {$_POST['idCL']}, '$ten', {$_POST['ThuTu']}, {$_POST['AnHien']})";
         if(!$result = $this->db->query($sql)) die($sql);
-        header("location: index.php?c=loaisp&a=xem");
+        header("location: index.php?a=loaisp-xem");
     }
     
     public function sualoaisp($idLoai){
-        if(!isset($_POST['TenLoai'])){
-            $this->errors['TenLoai'] = "Chưa nhập tên loại!";
-            return false;
+        if(!isset($_POST['btnsualoaisp'])){
+            $sql = "SELECT * FROM loaisp WHERE idLoai = $idLoai";
+            if(!$result = $this->db->query($sql)) die("loi ket noi");
+            $row = $result->fetch_assoc();
+            return $row;
         }
         
-        if(!isset($_POST['ThuTu'])){
-            $this->errors['ThuTu'] = "Chưa nhập thứ tự!";
-            return false;
-        }
+        $_POST['TenLoai'] = trim($_POST['TenLoai']);
+        $_POST['ThuTu'] = trim($_POST['ThuTu']);
         
-        if($_POST['AnHien'] != 0 && $_POST['AnHien'] != 1){
-            return false;
-        }
+        if(empty($_POST['TenLoai'])) $this->errors['TenLoai'] = "Không được bỏ trống trường này!";
+        if(!is_numeric($_POST['ThuTu'])) $this->errors['ThuTu'] = "Trường này phải nhập số!";
+        if(empty($_POST['ThuTu'])) $this->errors['ThuTu'] = "Không được bỏ trống trường này!";
         
-        settype($_POST['idCL'], "int");
-        settype($_POST['AnHien'], "int");
+        if(count($this->errors) > 0) return false;
         
-        $idCL = $_POST['idCL'];
-        $ten = $this->validate($_POST['TenLoai']);
-        $thutu = $this->validate($_POST['ThuTu']);
-        $anhien = $_POST['AnHien'];
+        $ten = $this->db->escape_string($_POST['TenLoai']);
         
-        $sql = "UPDATE loaisp SET idCL=$idCL, TenLoai='$ten', ThuTu=$thutu, AnHien=$anhien WHERE idLoai=$idLoai";
-        if(!$result = $this->db->query($sql)) die($sql);
-        header("location: index.php?c=loaisp&a=xem");
+        $sql = "UPDATE loaisp SET idCL={$_POST['idCL']}, TenLoai='$ten', ThuTu={$_POST['ThuTu']}, AnHien={$_POST['AnHien']} WHERE idLoai=$idLoai";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        header("location: index.php?a=loaisp-xem");
     }
     
     public function xoaloaisp($idLoai){
-        settype($idCL, "int");
         $sql = "DELETE FROM loaisp  WHERE idLoai=$idLoai";
-        if(!$result = $this->db->query($sql)) die($sql);
-        header("location: index.php?c=loaisp&a=xem");
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        header("location: index.php?a=loaisp-xem");
     }
 	
+    public function laytenloaisp($idLoai){
+        $sql = "SELECT TenLoai FROM loaisp WHERE idLoai=$idLoai";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+    
 	public function laysanpham($idCL, $idLoai=0, &$totalrows, $current_page=1, $per_page=10){
 		settype($idCL, "int"); settype($idLoai, "int");
 		
@@ -215,23 +207,19 @@ class quantri extends sp{
 	}
     
     public function themsanpham(){
-        if($_POST['idLoai'] == 0){
-            $this->errors['idLoai'] = 'Chọn loại sản phẩm';
-            return false;
-        }
+        $_POST['TenSP'] = trim($_POST['TenSP']);
+        $_POST['Gia'] = trim($_POST['Gia']);
         
-        if(empty($_POST['TenSP'])){
-            $this->errors['TenSP'] = 'Nhập tên sản phẩm';
-            return false;
-        }
+        if($_POST['idLoai'] ==0 ) $this->errors['idLoai'] = "Chọn loại sản phẩm!";
+        if(empty($_POST['TenSP'])) $this->errors['TenSP'] = "Không được bỏ trống trường này!";
+        if(!is_numeric($_POST['Gia'])) $this->errors['Gia'] = "Trường này phải nhập số!";
+        if(!empty($_POST['SoLuongTonKho']) && !is_numeric($_POST['SoLuongTonKho'])) $this->errors['SoLuongTonKho'] = "Trường này phải nhập số!";
+        if(empty($_POST['Gia'])) $this->errors['Gia'] = "Không được bỏ trống trường này!";
         
-        settype($_POST['Gia'], "int");
-        if($_POST['Gia'] == 0){
-            $this->errors['Gia'] = 'Nhập giá sản phẩm';
-            return false;
-        }
+        if(count($this->errors) > 0) return false;
         
         $urlHinh = "updating.png";
+        //nếu có up hình:
         if($_FILES['urlHinh']['error'] != 4){
             //kiem tra dinh dang file hinh upload
             $ext_list = array("jpeg", "png", "jpg");
@@ -248,26 +236,26 @@ class quantri extends sp{
             }
             //loi he thong, mang:
             if($_FILES['urlHinh']['error'] > 0){
-                $this->errors['urlHinh'] = 'Có lỗi xảy ra!';
+                $this->errors['urlHinh'] = 'Có lỗi xảy ra, xin thử lại!';
                 return false;
             }
             //ten hinh luu lai:
             $newname = $this->changeTitle($_POST['TenSP']) ."-".time(). "." . $file_ext;
             
             //bat dau upload:
-            $path = '../upload/sanpham/hinhchinh/' . $newname;
-            if(move_uploaded_file($_FILES['urlHinh']['tmp_name'], $path) == false){
-                $this->errors['urlHinh'] = 'Có lỗi xảy ra!';
-                return false;
+            if(empty($this->errors['urlHinh'])){
+                $path = '../upload/sanpham/hinhchinh/' . $newname;
+                if(move_uploaded_file($_FILES['urlHinh']['tmp_name'], $path) == false){
+                    $this->errors['urlHinh'] = 'Có lỗi xảy ra, xin thử lại!';
+                    return false;
+                }
+                //return
+                $urlHinh = $newname;
             }
-            //return
-            $urlHinh = $newname;
         }
         
-        settype($_POST['Gia'], "int");
         settype($_POST['SoLuongTonKho'], "int");
         $ngay = date('Y-m-d', time());
-        
         
         $sql = "INSERT INTO sanpham 
                 VALUES(null, {$_POST['idLoai']}, {$_POST['idCL']}, '{$_POST['TenSP']}', 
@@ -275,11 +263,10 @@ class quantri extends sp{
                             '{$_POST['baiviet']}', 0, {$_POST['SoLuongTonKho']}, 
                             '{$_POST['GhiChu']}', 0, {$_POST['AnHien']})";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
-        $this->errors['thanhcong'] = 'Thêm thành công';
+        header("location: index.php?a=sanpham-xem");
     }
     
     public function suasanpham($idSP){
-        settype($_POST['idLoai'], "int");
         if($_POST['idLoai'] == 0){
             $this->errors['idLoai'] = 'Chọn loại sản phẩm';
             return false;
@@ -291,12 +278,10 @@ class quantri extends sp{
         }
         
         settype($_POST['Gia'], "int");
-        if(!isset($_POST['Gia'])){
+        if($_POST['Gia'] == 0){
             $this->errors['Gia'] = 'Nhập tên sản phẩm';
             return false;
         }
-        
-        
         //kiem tra neu upload hinh moi
         $queryhinh = "";
         if($_FILES['urlHinh']['error'] != 4){
@@ -342,10 +327,10 @@ class quantri extends sp{
         settype($_POST['AnHien'], "int");
         settype($_POST['Gia'], "int");
         
-        $ten = $this->validate($_POST['TenSP']);     
-        $ghichu = $this->validate($_POST['GhiChu']);
-        $mota = $this->validate($_POST['MoTa']);
-        $baiviet = $this->validate($_POST['baiviet']);
+        $ten = $this->db->escape_string($_POST['TenSP']);     
+        $ghichu = $this->db->escape_string($_POST['GhiChu']);
+        $mota = $this->db->escape_string($_POST['MoTa']);
+        $baiviet = $this->db->escape_string($_POST['baiviet']);
         
         $ngay = date('Y-m-d', time());  
            

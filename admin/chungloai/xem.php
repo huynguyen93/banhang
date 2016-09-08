@@ -1,6 +1,6 @@
 <?php 
 
-$listchungloai = $qt->laychungloai(0, -1);
+$listchungloai = $qt->laychungloai(0);
 
 ?>
 <h2 class="">Chủng loại </h2>
