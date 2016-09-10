@@ -26,10 +26,12 @@
                 <li>
                     <form class="navbar-form navbar-left pull">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
+                        <form method="get" action="index.php">
+                        <input type="text" class="form-control" name="timkiem" value="<?php if(isset($_GET['timkiem'])) echo $_GET['timkiem'];?>" placeholder="Tìm nhanh sản phẩm...">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Go!</button>
+                            <button class="btn btn-default" type="submit">Tìm!</button>
                         </span>
+                        </form>
                     </div>
                     </form>
                 </li>

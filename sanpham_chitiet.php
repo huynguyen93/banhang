@@ -26,7 +26,7 @@ if($sanpham == false) return false;
         <?php
         if($sp->laythuoctinhsp($_GET['idSP']) == '') echo "Đang cập nhật";
         echo $sp->laythuoctinhsp($_GET['idSP']);
-        if($sanpham['baiviet'] != null) echo "<ul><li><a class='text-muted' href='#'>Xem thêm bài đánh giá</a></li></ul>";
+        if($sanpham['baiviet'] != null) echo "<ul><li><a class='text-muted text-primary' href='#'>Xem thêm bài đánh giá</a></li></ul>";
         ?>
     </div>
 </div>

@@ -25,7 +25,11 @@ $danhsachusers = $qt->laydsusers($totalrows, $current_page, $per_page);
         <td><?php echo $user['idUser']; ?></td>
         <td><?php echo $user['HoTen']; ?></td>
         <td><?php echo $user['Email']; ?></td>
-        <td><?php if(strlen($user['DiaChi']) > 30) echo substr($user['DiaChi'], 0 , strpos($user['DiaChi'], ' ', 25))."...<i class='glyphicon glyphicon glyphicon-plus-sign'></i>"; else echo $user['DiaChi']; ?></td>
+        <td>
+            <span title='<?php echo $user['DiaChi'];?>'>
+            <?php if(strlen($user['DiaChi']) > 30) echo substr($user['DiaChi'], 0 , strpos($user['DiaChi'], ' ', 25))."...<i class='glyphicon glyphicon glyphicon-plus-sign'></i>"; else echo $user['DiaChi']; ?>
+            </span>
+        </td>
         <td><?php echo $user['DienThoai']; ?></td>
         <td><?php echo date("d-my-Y", strtotime($user['NgayDangKy'])); ?></td>
         <td><?php if($user['idGroup'] == 1) echo "Admin"; else echo "User"; ?></td>

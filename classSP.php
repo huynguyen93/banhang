@@ -29,8 +29,48 @@ class sp extends db{
         return $data;
     }
     
-    public function laysptheoid($id){
+    public function laydssanpham($idCL, $idLoai, $gia, $order, &$totalrows, $current_page=1, $per_page=5){
+        settype($idCL, "int"); settype($idloai, "int");
         
+        if($idCL == 0) return false;
+        if($idLoai == 0) $idLoai = ''; else $idLoai = "AND idLoai=$idLoai";
+        
+        
+        $min = 0; $max = 0;
+        $gia = explode("-", $gia);
+        if(count($gia) == 2){
+            $min = $gia[0]; $max = $gia[1];
+            settype($min, "int"); settype($max, "int");
+        }
+        if($min == 0) $min = ''; else $min = "AND Gia>=$min";
+        if($max == 0) $max = ''; else $max = "AND Gia <=$max";
+        
+        $this->db->escape_string($order);
+        if($order == 'giatangdan') $order = 'Gia ASC';
+        elseif($order == 'spmoi') $order = 'NgayCapNhat DESC';
+        elseif($order == 'banchay') $order = 'SoLanMua DESC';
+        else $order = 'Gia DESC';
+        
+        $sql = "SELECT count(idSP) FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        if($result->num_rows < 1) echo $sql;
+        $row = $result->fetch_array();
+        $totalrows = $row[0];
+        
+        if($current_page < 1) $current_page=1;
+        $start = ceil($current_page-1)*$per_page;
+        
+        $sql = "SELECT idCL, idLoai, idSP, TenSP, Gia, urlHinh, SoLanMua FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order limit $start, $per_page";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        
+        $data = array();
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
+    public function laysptheoid($id){
         if($id <= 0) header('location: index.php');
         
         $sql = "select * from sanpham where idSP=$id";
@@ -102,46 +142,27 @@ class sp extends db{
         return $row[0];
     }
     
-    public function laydssanpham($idCL, $idLoai, $gia, $order, &$totalrows, $current_page=1, $per_page=5){
-        settype($idCL, "int"); settype($idloai, "int");
+    public function timkiemsanpham($keyword, &$totalrows, $current_page=1, $per_page=5){
+        $keyword = trim($keyword);
+        $keyword = $this->db->escape_string($keyword);
+        if(empty($keyword)){ header("location: index.php"); return false;}
         
-        if($idCL == 0) return false;
-        if($idLoai == 0) $idLoai = ''; else $idLoai = "AND idLoai=$idLoai";
-        
-        
-        $min = 0; $max = 0;
-        $gia = explode("-", $gia);
-        if(count($gia) == 2){
-            $min = $gia[0]; $max = $gia[1];
-            settype($min, "int"); settype($max, "int");
-        }
-        if($min == 0) $min = ''; else $min = "AND Gia>=$min";
-        if($max == 0) $max = ''; else $max = "AND Gia <=$max";
-        
-        $this->db->escape_string($order);
-        if($order == 'giatangdan') $order = 'Gia ASC';
-        elseif($order == 'spmoi') $order = 'NgayCapNhat DESC';
-        elseif($order == 'banchay') $order = 'SoLanMua DESC';
-        else $order = 'Gia DESC';
-        
-        $sql = "SELECT count(idSP) FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order";
+        $sql = "SELECT count(idSP) FROM sanpham WHERE TenSP LIKE '%$keyword%'";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
-        if($result->num_rows < 1) echo $sql;
-        $row = $result->fetch_array();
+        $row = $result->fetch_row();
         $totalrows = $row[0];
         
-        if($current_page < 1) $current_page=1;
         $start = ceil($current_page-1)*$per_page;
         
-        $sql = "SELECT idCL, idLoai, idSP, TenSP, Gia, urlHinh, SoLanMua FROM sanpham WHERE idCL=$idCL $idLoai $min $max AND AnHien=1 ORDER BY $order limit $start, $per_page";
+        $sql = "SELECT idCL, idLoai, idSP, TenSP, Gia, urlHinh, SoLanMua FROM sanpham WHERE TenSP LIKE '%$keyword%' ORDER BY TenSP LIMIT $start, $per_page";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
-        
         $data = array();
         while($row = $result->fetch_assoc()){
             $data[] = $row;
         }
         return $data;
     }
+    
     
     public function thanhphantrang($url, $totalrows, $current_page, $per_page=5, $pages_per_group=5){
         if($totalrows <= $per_page) return false;
@@ -323,69 +344,4 @@ class sp extends db{
         if(!$result = $this->db->query($sql)) die($sql);
         header("location: index.php?chungloai={$_POST['chungloai']}&loaisp={$_POST['loaisp']}&idSP={$_POST['idSP']}#binhluan");
     }
-    
-//    public function test(){
-//        $sql = "select idSP FROM sanpham";
-//        $result = $this->db->query($sql);
-//        while($row = $result->fetch_row()){
-//            $listID[] = $row[0];
-//        }
-//        
-//        foreach($listID as $idSP){
-//            $sql = "INSERT INTO sanpham_comment (idSP, hoten, email, noidung, ngay_comment)
-//                VALUES ($idSP, 'teo', 'teo@yahoo.com', 'test comment test comment test comment test comment test comment test comment test comment test comment test comment test comment ', '2016-05-09')";
-//            $this->db->query($sql);
-//        }
-//    }
-    
-//    public function gia(){
-//        $sql = "select idSP from sanpham";
-//        $result = $this->db->query($sql);
-//        
-//        $ids = array();
-//        while($row= $result->fetch_row()){
-//            $ids[] = $row[0];
-//        }
-//        
-//        foreach($ids as $idSP){
-//            $num = rand(5, 200);
-//            $gia = $num*100000;
-//            $sql = "update sanpham set Gia=$gia where idSP=$idSP";
-//            $this->db->query($sql);
-//        }
-//    }
-    
-//    public function solanxem(){
-//        $sql = "select idSP from sanpham";
-//        $result = $this->db->query($sql);
-//        
-//        $ids = array();
-//        while($row= $result->fetch_row()){
-//            $ids[] = $row[0];
-//        }
-//        
-//        foreach($ids as $idSP){
-//            $num = rand(777, 33333);
-//            $sql = "update sanpham set SoLanXem=$num where idSP=$idSP";
-//            $this->db->query($sql);
-//        }
-//    }
-    
-//    public function ngay(){
-//        $sql = "select idSP from sanpham";
-//        $result = $this->db->query($sql);
-//        
-//        $ids = array();
-//        while($row= $result->fetch_row()){
-//            $ids[] = $row[0];
-//        }
-//        
-//        foreach($ids as $idSP){
-//            $ngay = rand(1388530800, 1464732000);
-//            $ngaycapnhat = date('Y-m-d', $ngay);
-//            $sql = "update sanpham set NgayCapNhat='$ngaycapnhat' where idSP=$idSP";
-//            $this->db->query($sql);
-//        }
-//    }
-    
 }

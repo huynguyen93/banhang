@@ -46,7 +46,8 @@ $u = new user;
         <div class="row">
             <div class="col-md-12">
                 <?php
-                if(isset($_GET['action']) && $_GET['action']=='xemdonhang') require_once("donhang_chitiet.php");
+                if(isset($_GET['timkiem'])) require_once("sanpham_timkiem.php");
+                elseif(isset($_GET['action']) && $_GET['action']=='xemdonhang') require_once("donhang_chitiet.php");
                 elseif(isset($_GET['action']) && $_GET['action'] =='thanhcong') require_once("dathangthanhcong.php");
                 elseif(isset($_GET['action']) && $_GET['action'] =='thongtinnhanhang') require_once("thongtinnhanhang.php");
                 elseif(isset($_GET['idSP'])) require_once("sanpham_chitiet.php");
