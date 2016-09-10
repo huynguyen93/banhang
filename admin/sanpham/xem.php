@@ -1,5 +1,5 @@
 <h2 class="">Sản phẩm </h2>
-
+<?php if(isset($_SESSION['success'])) echo "<p class='alert alert-success' style='padding:10px;'>{$_SESSION['success']}</p>"; unset($_SESSION['success']);?>
 <form method="get" action="" class="form-inline" style="margin: 10px 0px;">
     <input type="hidden" name="a" value="sanpham-xem">
     <div class="form-group" style="margin-right: 20px;">
@@ -65,11 +65,9 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
 </table>
 <div>
     <?php
-    
     $url = "http://localhost/banhang/admin/index.php?a=sanpham-xem&idCL=$idCL&idLoai=$idLoai";
-    
-    
-    echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group); ?>
+    echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group);
+    ?>
 </div>
 <script>
     $(document).ready(function(){

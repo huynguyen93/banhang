@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 $dsdonhang = $qt->laydsdonhang(0, $totalrows, $current_page, $per_page);
 
 ?>
 <h2 class="">Đơn hàng chưa duyệt</h2>
+<?php if(isset($_SESSION['success'])) echo "<p class='alert-success' style='padding:10px;'>{$_SESSION['success']}</p>"; unset($_SESSION['success']);?>
 <p><b>Còn:</b> <?php echo $totalrows;?> đơn hàng chưa duyệt</p>
 
 <table class="table table-striped">

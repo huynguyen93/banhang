@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 $listchungloai = $qt->laychungloai(0);
 
 ?>
 <h2 class="">Chủng loại </h2>
-
+<?php if(isset($_SESSION['fail'])) echo "<p class='alert alert-danger' style='padding:10px;'>{$_SESSION['fail']}</p>"; unset($_SESSION['fail']);?>
 <table class="table">
     <thead>
         <tr>

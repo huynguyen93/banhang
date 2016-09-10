@@ -1,10 +1,10 @@
-<?php 
+<?php
 
-$dsbinhluan = $qt->laybinhluan(1, $totalrows);
+$dsbinhluan = $qt->laybinhluan(1, $totalrows, $current_page, $per_page);
 
 ?>
 <h2 class="">Bình luận đã duyệt</h2>
-
+<p><b>Tổng:</b> <?php echo $totalrows;?> bình luận</p>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -27,8 +27,14 @@ $dsbinhluan = $qt->laybinhluan(1, $totalrows);
             <td><a href="index.php?a=binhluan-sua&id_comment=<?php echo $binhluan['id_comment'];?>">Sửa</a> / <a href="index.php?a=binhluan-xoa&id_comment=<?php echo $binhluan['id_comment'];?>">Xóa</a></td> 
         </tr>
     <?php }?>
-        <tr><td colspan="6"><b>Tổng:</b> <?php echo $totalrows;?> bình luận</td></tr>
     </tbody>
 </table>
+
+<div>
+    <?php
+    $url = "index.php?a=binhluan-xem";
+    echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group);
+    ?>
+</div>
 <script>
 </script>

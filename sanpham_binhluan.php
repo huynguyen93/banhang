@@ -4,8 +4,9 @@ $dsbinhluan = $sp->laydsbinhluan($_GET['idSP']);
 
 ?>
 <?php if(count($dsbinhluan) > 0) {?>
-<div>
-    <h3 id="binhluan">Bình luận</h3>
+
+<h3 id="binhluan">Bình luận</h3>
+<div style="max-height: 320px; overflow:auto;">
     <?php foreach($dsbinhluan as $binhluan){?>
     <div>
         <p style="margin-bottomhp: 0;"><b><?php echo $binhluan['hoten'];?></b> - <i><?php echo date('d-m-Y', strtotime($binhluan['ngay_comment'])) ?></i></p>
@@ -17,8 +18,8 @@ $dsbinhluan = $sp->laydsbinhluan($_GET['idSP']);
 <?php }?>
 
 <div>
-    <h3>Để lại bình luận</h3>
-    <form method="post" action="process.php">
+    <p class='btn btn-primary' id='btn-thembinhluan' style="margin-top: 10px;">Gửi bình luận <i class='glyphicon glyphicon-pencil'></i></p>
+    <form method="post" action="process.php" id="formbinhluan" style="display:none">
         <input type="hidden" name='chungloai' value="<?php echo $_GET['chungloai'];?>">
         <input type="hidden" name='loaisp' value="<?php echo $_GET['loaisp'];?>">
         <input type="hidden" name='idSP' value="<?php echo $_GET['idSP'];?>">
@@ -41,4 +42,10 @@ $dsbinhluan = $sp->laydsbinhluan($_GET['idSP']);
     </form>
 </div>
 <script>
+    $(document).ready(function(){
+        $("#btn-thembinhluan").click(function(){
+            $("#formbinhluan").slideDown();
+            $("#btn-thembinhluan").hide('slow');
+        });
+    });
 </script>

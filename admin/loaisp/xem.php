@@ -5,7 +5,7 @@ $listloaisp = $qt->layloaisp($idCL);
 
 ?>
 <h2 class="">Loại sản phẩm </h2>
-
+<?php if(isset($_SESSION['fail'])) echo "<p class='alert alert-danger' style='padding:10px;'>{$_SESSION['fail']}</p>"; unset($_SESSION['fail']);?>
 <form method="post" action="" class="col-md-6">
     <div class="form-group">
         <label for="idCL">Chủng loại</label>

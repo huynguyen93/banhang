@@ -17,7 +17,7 @@
              
             <ul class="nav navbar-nav navbar-right">
                 <?php $listchungloai = $sp->laydschungloai();?>
-                <?php foreach($listchungloai as $chungloai){ ?>
+                <?php foreach($listchungloai as $chungloai){?>
                 <li class="<?php if($idCL == $chungloai['idCL']){echo "active-cat";}?>"><a href="index.php?chungloai=<?php echo $chungloai['idCL'];?>"><?php echo $chungloai['TenCL'] ?></a></li>
                 <?php }?>
                 <li class=""><a href="">Tin tức</a></li>

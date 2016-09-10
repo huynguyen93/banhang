@@ -1,8 +1,6 @@
 <?php require_once("classquantri.php");
 $qt = new quantri;
 
-if(isset($_POST['themchungloai'])) $qt->themchungloai();
-
 if(isset($_GET['duyetdonhang'])){
     $qt->duyetdonhang($_GET['duyetdonhang']);
 }

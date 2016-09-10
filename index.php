@@ -1,5 +1,4 @@
 <?php require_once("classSP.php"); require_once("classUser.php");
-
 $sp = new sp;
 //gio hang
 if(!isset($_SESSION['sanpham'])) $_SESSION['sanpham'] = array();
@@ -25,25 +24,25 @@ $u = new user;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </head>
-    
+
 <body>
     <div class="container" id="container">
         <div class="header row">
             <?php include("sanpham_chungloai.php"); ?>
         </div>
-        
+
         <div class="row menuloai-user">
             <div class="col-md-9"><?php require_once("sanpham_loaisp.php"); ?></div>
             <div class="col-md-3 user-area text-center"><?php  if(isset($_SESSION['user_hoten'])) require_once("user_info.php"); else require_once("user.php");?></div>
         </div>
-        
+
         <div class="row filter-giohang">
             <?php if(isset($_GET['action']) && $_GET['action'] =='xemdonhang') echo ""; else{?>
             <div class="col-xs-9 col-md-9"><?php if(isset($_GET['idSP'])) echo ""; else require_once("sanpham_filter.php");?></div>
             <div class="col-xs-3 col-md-3 text-center giohang"><?php require_once("giohang.php");?></div>
             <?php }?>
         </div>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <?php
@@ -69,8 +68,8 @@ $u = new user;
                 $("#container").height(bodyheight-footerheight);
             }
         });
-        
-        
+
+
         function themvaogiohang(){
             $.ajax({
                 url: 'process.php',

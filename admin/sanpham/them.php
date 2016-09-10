@@ -39,6 +39,11 @@ if(isset($_POST['themsanpham'])) $qt->themsanpham();
             <?php if(isset($qt->errors['Gia'])) echo " <i class='text-danger'>{$qt->errors['Gia']}</i>";?>
             <input type="text" name="Gia" class="form-control" value="<?php if(isset($_POST['Gia'])) echo $_POST['Gia'];?>">
         </div>
+        
+        <div class="form-group" style="clear:both;">
+            <label for="MoTa" >Mô tả</label>
+            <textarea name="MoTa" class="form-control" rows="3"><?php if(isset($_POST['MoTa'])) echo $_POST['MoTa'];?></textarea>
+        </div>
     </div>
         
     <div class="col-md-6" style="padding-left: 20px;">
@@ -66,14 +71,16 @@ if(isset($_POST['themsanpham'])) $qt->themsanpham();
             <label for="GhiChu">Ghi chú</label>
             <textarea name="GhiChu" class="form-control" rows="2"><?php if(isset($_POST['GhiChu'])) echo $_POST['GhiChu'];?></textarea>
         </div>
-    </div>
         
         <div class="form-group" style="clear:both;">
-            <label for="MoTa" >Mô tả</label>
-            <textarea name="MoTa" class="form-control" rows="3"><?php if(isset($_POST['MoTa'])) echo $_POST['MoTa'];?></textarea>
+            <label for="thuoc_tinh" >Tính năng nổi bật</label>
+            <textarea name="thuoc_tinh" class="form-control" rows="3"><?php if(isset($_POST['thuoc_tinh'])) echo $_POST['thuoc_tinh'];?></textarea>
         </div>
+    </div>
         
-        <div class="form-group" >
+        
+        
+        <div class="form-group" style="clear:both">
             <label for="baiviet">Bài viết</label>
             <textarea name="baiviet" class="form-control tinymce" rows="6"><?php if(isset($_POST['baiviet'])) echo $_POST['baiviet'];?></textarea>
         </div>
@@ -93,6 +100,7 @@ if(isset($_POST['themsanpham'])) $qt->themsanpham();
     function layloaisp(){
         $.ajax({
             url: 'process.php',
+            async: true,
             type: 'get',
             data: 'a=layloaisp&idCL='+$("#idCL").val()+"&idLoai="+$("#idLoai").val(),
             success: function(data){

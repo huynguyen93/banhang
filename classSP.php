@@ -57,7 +57,7 @@ class sp extends db{
     }
     
     public function laythuoctinhsp($idSP){
-        $sql = "select tinh_nang_noi_bat from sanpham_thuoctinh where idSP=$idSP";
+        $sql = "select thuoc_tinh from sanpham where idSP=$idSP";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $data = $result->fetch_row();
         return $data[0];        

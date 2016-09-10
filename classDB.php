@@ -1,4 +1,4 @@
-<?php session_start(); ob_start();
+<?php session_start(); ob_start(); define("CHECK", 1);
 class db{
     public $db;
     

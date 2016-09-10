@@ -24,7 +24,9 @@ if($sanpham == false) return false;
     <div class="col-sm-12 col-md-5 text-muted">
         <h2 class="">Chức năng nổi bật</h2>
         <?php
+        if($sp->laythuoctinhsp($_GET['idSP']) == '') echo "Đang cập nhật";
         echo $sp->laythuoctinhsp($_GET['idSP']);
+        if($sanpham['baiviet'] != null) echo "<ul><li><a class='text-muted' href='#'>Xem thêm bài đánh giá</a></li></ul>";
         ?>
     </div>
 </div>
@@ -40,6 +42,9 @@ if($sanpham == false) return false;
         <?php }?>
     </div>
 </div>
+
+<hr/>
+
 <?php 
     $listsptuongduong = $sp->laysptuongduong($idCL, $sanpham['idSP'], 10, 12);
     if(count($listsptuongduong)>0){

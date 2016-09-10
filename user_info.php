@@ -5,7 +5,7 @@
     <?php
     if($_SESSION['user_group'] == 1){
     ?>
-    <a href="admin/index.php" id="user">Quản trị</a>, <a href="process.php?action=thoat">Thoát</a>
+    <a href="admin/index.php">Quản trị</a>, <a href="process.php?action=thoat">Thoát</a>
     <?php
     }  else {
     ?>
