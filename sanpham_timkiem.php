@@ -9,7 +9,7 @@ $list_id_spmoi = $sp->layidspmoi($idCL, 10);
     <div class="panel-body">
         <div class="row">
             <?php 
-            if(count($listsp) == 0) echo "<h4>Đang cập nhật...!</h4>";
+            if(count($listsp) == 0) echo "Không tìm thấy sản phẩm phù hợp, vui lòng thử lại từ khóa khác!";
              else foreach($listsp as $sanpham)
             {
             ?>

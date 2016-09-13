@@ -12,15 +12,15 @@ $per_page = 10;
 $current_page = 1; if(isset($_GET['page'])) $current_page = $_GET['page'];
 $pages_per_group = 5;
 
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset='utf-8'>
-<link rel="stylesheet" href="../css/bootstrap.css"> 
-<link rel="stylesheet" href="../css/style.css">
-<script src="../js/jquery.js"></script>
+<title>Quản trị</title>
+<link rel="stylesheet" href="<?php echo BASE_URL;?>css/bootstrap.css"> 
+<link rel="stylesheet" href="<?php echo BASE_URL;?>css/style.css">
+<script src="<?php echo BASE_URL;?>js/jquery.js"></script>
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 <script>tinymce.init({ selector:'.tinymce' });</script>
 </head>
@@ -54,7 +54,7 @@ $pages_per_group = 5;
           else $("nav#sidebar").height(h);
     });
     function xacnhan(){
-        confirm("Bạn có chắc muốn xóa?");
+        return confirm("Bạn có chắc muốn xóa?");
     }
 </script>
 </body>

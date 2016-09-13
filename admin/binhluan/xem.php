@@ -24,7 +24,7 @@ $dsbinhluan = $qt->laybinhluan(1, $totalrows, $current_page, $per_page);
             <td><?php echo $binhluan['hoten'];?></td>
             <td><?php echo $binhluan['email'];?></td>
             <td><span title="<?php echo $binhluan['noidung'];?>"><?php if(strlen($binhluan['noidung']) > 30) echo mb_substr($binhluan['noidung'], 0, strpos($binhluan['noidung'], ' ', 30))."..."; else echo $binhluan['noidung'];?><span></span></td>
-            <td><a href="index.php?a=binhluan-sua&id_comment=<?php echo $binhluan['id_comment'];?>">Sửa</a> / <a href="index.php?a=binhluan-xoa&id_comment=<?php echo $binhluan['id_comment'];?>">Xóa</a></td> 
+            <td><a href="index.php?a=binhluan-sua&id_comment=<?php echo $binhluan['id_comment'];?>">Sửa</a> / <a onclick="return xacnhan();" href="index.php?a=binhluan-xoa&id_comment=<?php echo $binhluan['id_comment'];?>">Xóa</a></td> 
         </tr>
     <?php }?>
     </tbody>
@@ -36,5 +36,3 @@ $dsbinhluan = $qt->laybinhluan(1, $totalrows, $current_page, $per_page);
     echo $qt->thanhphantrang($url, $totalrows, $current_page, $per_page, $pages_per_group);
     ?>
 </div>
-<script>
-</script>

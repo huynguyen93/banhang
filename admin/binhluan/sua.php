@@ -1,6 +1,7 @@
 <?php
+settype($_GET['id_comment'], "int");
 
-if(!isset($_GET['id_comment']) || $_GET['id_comment'] < 1) header("location: index.php?c=loaisp&a=xem");
+if($_GET['id_comment'] <= 0) header("location: index.php?c=loaisp&a=xem");
 
 $binhluan = $qt->lay1binhluan($_GET['id_comment']);
 

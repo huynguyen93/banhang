@@ -6,6 +6,7 @@ $listloaisp = $qt->layloaisp($idCL);
 ?>
 <h2 class="">Loại sản phẩm </h2>
 <?php if(isset($_SESSION['fail'])) echo "<p class='alert alert-danger' style='padding:10px;'>{$_SESSION['fail']}</p>"; unset($_SESSION['fail']);?>
+<?php if(isset($_SESSION['success'])) echo "<p class='alert alert-success' style='padding:10px;'>{$_SESSION['success']}</p>"; unset($_SESSION['success']);?>
 <form method="post" action="" class="col-md-6">
     <div class="form-group">
         <label for="idCL">Chủng loại</label>
@@ -38,7 +39,7 @@ $listloaisp = $qt->layloaisp($idCL);
         <td><?php echo $row['TenLoai'];?></td>
         <td><?php echo $row['ThuTu'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
-        <td><a href="index.php?a=loaisp-sua&idLoai=<?php echo $row['idLoai'];?>">Sửa</a> / <a href="index.php?a=loaisp-xoa&idLoai=<?php echo $row['idLoai'];?>">Xóa</a></td>
+        <td><a href="index.php?a=loaisp-sua&idLoai=<?php echo $row['idLoai'];?>">Sửa</a> / <a onclick="return xacnhan();" href="index.php?a=loaisp-xoa&idLoai=<?php echo $row['idLoai'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>

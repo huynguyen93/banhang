@@ -3,7 +3,7 @@ if(isset($_GET['a'])) {$array = explode('-', $_GET['a']); $action=$array[0];}
 
 ?>
 <ul id="menu-qt" style="">
-    <li <?php if(!isset($_GET['a']) )echo " class= 'active'"; ?>><a href="#" onclick="return false;">Admin dashboard</a></li>
+    <li <?php if(!isset($_GET['a']) )echo " class= 'active'"; ?>><a href="index.php">Admin dashboard</a></li>
     <li><a href="../index.php">Home page</a></li>
     <li class="<?php if(isset($_GET['a']) && $action == 'donhang') echo 'active'; ?>">
         <a href="#">Đơn hàng <span class="caret"></span></a>
@@ -45,13 +45,6 @@ if(isset($_GET['a'])) {$array = explode('-', $_GET['a']); $action=$array[0];}
         <ul class="">
             <li><a href="index.php?a=user-xem">Xem danh sách</a></li>
             <li><a href="index.php?a=user-them">Thêm mới</a></li>
-        </ul>
-    </li>
-    <li>
-        <a href="#">Tin tức <span class="caret"></span></a>
-        <ul class="">
-            <li><a href="#">Xem danh sách</a></li>
-            <li><a href="#">Thêm mới</a></li>
         </ul>
     </li>
     <li><a href="../process.php?action=thoat">Logout</a></li>

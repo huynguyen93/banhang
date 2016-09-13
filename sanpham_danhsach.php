@@ -26,7 +26,7 @@ $list_id_spmoi = $sp->layidspmoi($idCL, 10);
                 <center>
                 <?php if(in_array($sanpham['idSP'], $list_id_spmoi)){?><span class="spmoi">Mới</span><?php }?>
                 <span class="luotmua"><?php echo $sanpham['SoLanMua'] ?> lượt mua</span>
-                <img class="tomtatsp-hinh  img-responsive" src="upload/sanpham/hinhchinh/<?php echo $sanpham['urlHinh']; ?>" />
+                <img class="tomtatsp-hinh  img-responsive" src="<?php echo BASE_URL;?>upload/sanpham/hinhchinh/<?php echo $sanpham['urlHinh']; ?>" />
                 <p><strong><?php echo $sanpham['TenSP'];?></strong></p>
                     <p class="text-danger"><strong><?php echo number_format($sanpham['Gia'],0,',','.');?></strong><small>đ</small></p>
                 </center>

@@ -25,6 +25,10 @@ elseif(isset($_GET['a']) && $_GET['a']=='layloaisp' && isset($_GET['idCL'])) {
 <?php
 }
 
+elseif(isset($_GET['xoahinh'])){
+    $qt->xoahinhphu($_GET['xoahinh'], $_GET['urlHinh'], $_GET['idSP']);
+}
+
 elseif(isset($_GET['duyetbinhluan'])){
     $qt->duyetbinhluan($_GET['duyetbinhluan']);
 }
@@ -38,7 +42,7 @@ elseif(isset($_GET['laybinhluan'])){
     <?php $dsbinhluan = $qt->laybinhluan(0, $totalrows); foreach($dsbinhluan as $binhluan){ ?>
     <tr>
         <td><?php echo $binhluan['id_comment'];?></td>
-        <td><a class='text-primary' href="http://localhost/banhang/index.php?idSP=<?php echo $binhluan['idSP'];?>"><?php echo $qt->laytensanpham($binhluan['idSP']);?></a></td>
+        <td><a class='text-primary' href="../index.php?idSP=<?php echo $binhluan['idSP'];?>"><?php echo $qt->laytensanpham($binhluan['idSP']);?></a></td>
         <td><?php echo $binhluan['hoten'];?></td>
         <td><?php echo $binhluan['email'];?></td>
         <td><span title="<?php echo $binhluan['noidung'];?>"><?php if(strlen($binhluan['noidung']) > 30) echo mb_substr($binhluan['noidung'], 0, strpos($binhluan['noidung'], ' ', 30))."..."; else echo $binhluan['noidung'];?><span></span></td>

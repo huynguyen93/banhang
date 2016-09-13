@@ -24,11 +24,11 @@
                     ?>
                     <tr>
                         <td><?php echo $i+1; ?></td>
-                        <td ><a class="text-primary" href="index.php?idSP=<?php echo $_SESSION['sanpham'][$i]['idsp'];?>"><?php echo $_SESSION['sanpham'][$i]['name'];?></a></td>
+                        <td ><a class="text-primary" href="<?php echo BASE_URL;?>index.php?idSP=<?php echo $_SESSION['sanpham'][$i]['idsp'];?>"><?php echo $_SESSION['sanpham'][$i]['name'];?></a></td>
                         <td class="text-center"><input class="soluong" style="width:50px; text-align:center" type="text" name="soluong<?php echo $i?>" value="<?php echo number_format($_SESSION['sanpham'][$i]['quantity'], 0, ',', '.');?>"></td>
                         <td class="text-right"><?php echo number_format($_SESSION['sanpham'][$i]['price']);?></td>
                         <td class="text-right"><?php echo number_format($_SESSION['sanpham'][$i]['price']*$_SESSION['sanpham'][$i]['quantity'],0, ',', '.');?>đ</td>
-                        <td class="text-center"><a class="text-danger" href="process.php?xoasanpham=<?php echo $i;?>">Xóa <i class="glyphicon glyphicon-trash"></i></a></td>
+                        <td class="text-center"><a class="text-danger" href="<?php echo BASE_URL;?>process.php?xoasanpham=<?php echo $i;?>">Xóa <i class="glyphicon glyphicon-trash"></i></a></td>
                     </tr>
                     <?php
                         $tong += $_SESSION['sanpham'][$i]['price']*$_SESSION['sanpham'][$i]['quantity'];
@@ -42,7 +42,7 @@
                     </tr>
                 </table>
                 <button class="btn btn-default" type="submit" name="capnhatgiohang">Cập nhật</button>
-                <a href="index.php?action=thongtinnhanhang" class="btn btn-success">Tiếp tục</a>
+                <a href="<?php echo BASE_URL;?>index.php?action=thongtinnhanhang" class="btn btn-success">Tiếp tục</a>
                 </form>
                 <hr/>
                 <?php 

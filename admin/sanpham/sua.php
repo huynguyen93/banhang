@@ -1,9 +1,12 @@
 <?php
+settype($_GET['idSP'], "int");
+
+if($_GET['idSP'] <= 0) header("location: index.php?a=sanpham-xem");
 
 if(isset($_POST['suasanpham'])) $result= $qt->suasanpham($_GET['idSP']);
 
 $sanpham = $qt->laysptheoid($_GET['idSP']);
-
+$sanpham['youtube'] = $qt->layvideo($_GET['idSP']);
 ?>
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 <script>tinymce.init({ selector:'.tinymce' });</script>
@@ -57,7 +60,7 @@ $sanpham = $qt->laysptheoid($_GET['idSP']);
             <label for="urlHinh">Hình</label>
             <p class="error-message"><?php if(!empty($qt->error['urlHinh'])) echo $qt->error['urlHinh'];?></p>
             <p><a href="#" class="xemhinhnhanh">Xem hình cũ<img src="http://localhost/banhang/upload/sanpham/hinhchinh/<?php echo $sanpham['urlHinh'];?>"/></a>
-            / <a href="#" id="chonhinhmoi">Chọn hình mới</a></p>
+            / <a href="#" id="chonhinhmoi">Chọn hình chính mới</a> / <a href="index.php?a=sanpham-hinhphu&idSP=<?php echo $_GET['idSP'];?>">Hình phụ</a></p>
             <input type="file" name="urlHinh" id="uphinh" style="display: none;"/>
         </div>
         
@@ -81,7 +84,12 @@ $sanpham = $qt->laysptheoid($_GET['idSP']);
         
         <div class="form-group" style="clear:both;">
             <label for="thuoc_tinh" >Tính năng nổi bật</label>
-            <textarea name="thuoc_tinh" class="form-control" rows="3"><?php if(isset($_POST['thuoc_tinh'])) echo $_POST['thuoc_tinh'];?></textarea>
+            <textarea name="thuoc_tinh" class="form-control" rows="3"><?php if(isset($_POST['thuoc_tinh'])) echo $_POST['thuoc_tinh']; else echo $sanpham['thuoc_tinh'];?></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="youtube">Link youtube</label>
+            <input type="text" name="youtube" class="form-control" value="<?php if(isset($_POST['youtube'])) echo "http://youtube.com/watch?v=".$_POST['youtube']; elseif(!empty($sanpham['youtube'])) echo "http://youtube.com/watch?v=".$sanpham['youtube'];?>">
         </div>
         
     </div>

@@ -59,7 +59,7 @@ $listsanpham = $qt->laysanpham($idCL, $idLoai, $totalrows, $current_page, $per_p
         <td><?php echo $row['TenSP'];?></td>
         <td><?php echo $row['SoLanMua'];?></td>
         <td><?php if($row['AnHien']==0) echo "Ẩn"; else echo "Hiện" ;?></td>
-        <td><a href="index.php?a=sanpham-sua&idSP=<?php echo $row['idSP'];?>">Sửa</a> / <a href="index.php?a=sanpham-xoa&idSP=<?php echo $row['idSP'];?>">Xóa</a></td>
+        <td><a href="index.php?a=sanpham-sua&idSP=<?php echo $row['idSP'];?>">Sửa</a> / <a onclick="return xacnhan();" href="index.php?a=sanpham-xoa&idSP=<?php echo $row['idSP'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>

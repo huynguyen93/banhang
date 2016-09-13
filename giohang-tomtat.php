@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start(); define("BASE_URL", "http://localhost/banhang/") ?>
     <?php if(count($_SESSION['sanpham']) > 0){?>
     <table class="table table-striped" style="width: 500px;">
         <thead>
@@ -28,7 +28,7 @@
         </tr>
     </table>
     <hr/>
-    <a href="index.php?action=xemdonhang" class="btn btn-lg btn-default btn-block">Xem chi tiết</a>
+    <a href="<?php echo BASE_URL;?>index.php?action=xemdonhang" class="btn btn-lg btn-default btn-block">Xem chi tiết</a>
     <?php
     } else {
     $tongsanpham = 0;

@@ -126,7 +126,7 @@ class sp extends db{
     }
     
     public function layhinhsp($idSP){
-        $sql = "SELECT urlHinh FROM sanpham_hinh WHERE idSP=$idSP";
+        $sql = "SELECT id_hinh, urlHinh FROM sanpham_hinh WHERE idSP=$idSP";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $data = array();
         while($row = $result->fetch_assoc()){
@@ -323,18 +323,18 @@ class sp extends db{
     }
     
     public function binhluan(){
+        $hoten = trim($hoten);
         $hoten = strip_tags($_POST['hoten']);
         $hoten = $this->db->escape_string($hoten);
-        $hoten = trim($hoten);
         
         if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)==false) return false;
+        $email = trim($email);
         $email = strip_tags($_POST['email']);
         $email = $this->db->escape_string($email);
-        $email = trim($email);
         
-        $noidung = strip_tags($_POST['noidung']);
-        $noidung = $this->db->escape_string($noidung);
         $noidung = trim($noidung);
+        $noidung = strip_tags($noidung);
+        $noidung = $this->db->escape_string($noidung);
         $noidung = nl2br($noidung);
         
         $ngay = date("Y-m-d", time());

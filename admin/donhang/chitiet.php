@@ -1,6 +1,10 @@
 <?php
-if(!isset($_GET['idDH']) || $_GET['idDH'] <1) header("location: index.php");
+settype($_GET['idDH'], "int");
+
+if($_GET['idDH'] <= 0) header("location: index.php");
+
 $chitietdonhang = $qt->laychitietdonhang($_GET['idDH']);
+
 $thongtin = $qt->laythongtindonhang($_GET['idDH']);
 ?>
 <h2 class="">Chi tiết đơn hàng số <?php echo $_GET['idDH'] ?></h2>
@@ -95,7 +99,7 @@ $thongtin = $qt->laythongtindonhang($_GET['idDH']);
 </div>
 </div>
 <?php if($thongtin['DaXuLy'] == 0){ ?>
-<a href="process.php?huydonhang=<?php echo $_GET['idDH'];?>" class="btn btn-lg btn-default">HỦY ĐƠN HÀNG</a>
+<a onclick="return xacnhan();" href="process.php?huydonhang=<?php echo $_GET['idDH'];?>" class="btn btn-lg btn-default">HỦY ĐƠN HÀNG</a>
 <a href="process.php?duyetdonhang=<?php echo $_GET['idDH'];?>" class="btn btn-lg btn-success">ĐÃ XỬ LÝ XONG</a>
 <?php } else {?>
 <a href="index.php?a=donhang-xem" class="btn btn-primary btn-lg">Back</a>

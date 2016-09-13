@@ -58,7 +58,7 @@ if($sanpham == false) return false;
     ?>
     <a href="index.php?idSP=<?php echo $sanpham['idSP']?>"><div class="col-md-2 text-center">
         <center>
-        <img class="tomtatsp-hinh img-responsive" src="/banhang/upload/sanpham/hinhchinh/<?php echo $sanpham['urlHinh'];?>">
+        <img class="tomtatsp-hinh img-responsive" src="<?php echo BASE_URL;?>upload/sanpham/hinhchinh/<?php echo $sanpham['urlHinh'];?>">
         <b style="font-size: 12px;"><?php echo ucwords(strtolower($sanpham['TenSP'])); ?></b>
         <p class="text-danger" ><strong><?php echo number_format($sanpham['Gia'],0,',','.');?><small>đ</small></strong></p>
         </center>

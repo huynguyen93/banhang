@@ -33,7 +33,7 @@ $danhsachusers = $qt->laydsusers($totalrows, $current_page, $per_page);
         <td><?php echo $user['DienThoai']; ?></td>
         <td><?php echo date("d-my-Y", strtotime($user['NgayDangKy'])); ?></td>
         <td><?php if($user['idGroup'] == 1) echo "Admin"; else echo "User"; ?></td>
-        <td><a href="index.php?a=user-sua&idUser=<?php echo $user['idUser']; ?>">Sửa</a> / <a onclick="xacnhan()" href="index.php?a=user-xoa&idUser=<?php echo $user['idUser'];?>">Xóa</a></td>
+        <td><a href="index.php?a=user-sua&idUser=<?php echo $user['idUser']; ?>">Sửa</a> / <a onclick="return xacnhan()" href="index.php?a=user-xoa&idUser=<?php echo $user['idUser'];?>">Xóa</a></td>
     </tr>
     <?php }?>
 </table>

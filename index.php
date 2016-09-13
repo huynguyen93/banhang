@@ -18,11 +18,15 @@ $u = new user;
 <!DOCTYPE html>
 <html>
 <head>
+<title>Nhất nghệ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="<?=BASE_URL?>">
 <link href="https://fonts.googleapis.com/css?family=Baloo+Tamma" rel="stylesheet">
-<link rel="stylesheet" href="css/bootstrap.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="<?php echo BASE_URL;?>css/bootstrap.css">
+<link rel="stylesheet" href="<?php echo BASE_URL;?>css/style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="<?php echo BASE_URL;?>js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -37,9 +41,9 @@ $u = new user;
         </div>
 
         <div class="row filter-giohang">
-            <?php if(isset($_GET['action']) && $_GET['action'] =='xemdonhang') echo ""; else{?>
-            <div class="col-xs-9 col-md-9"><?php if(isset($_GET['idSP'])) echo ""; else require_once("sanpham_filter.php");?></div>
-            <div class="col-xs-3 col-md-3 text-center giohang"><?php require_once("giohang.php");?></div>
+            <?php if(!isset($_GET['action'])){?>
+            <div class="col-xs-6 col-md-9"><?php if(isset($_GET['idSP'])) echo ""; else require_once("sanpham_filter.php");?></div>
+            <div class="col-xs-6 col-md-3 text-center giohang"><?php require_once("giohang.php");?></div>
             <?php }?>
         </div>
 
@@ -47,6 +51,7 @@ $u = new user;
             <div class="col-md-12">
                 <?php
                 if(isset($_GET['timkiem'])) require_once("sanpham_timkiem.php");
+                elseif(isset($_GET['action']) && $_GET['action'] == 'lienhe') require_once("lienhe.php");
                 elseif(isset($_GET['action']) && $_GET['action']=='xemdonhang') require_once("donhang_chitiet.php");
                 elseif(isset($_GET['action']) && $_GET['action'] =='thanhcong') require_once("dathangthanhcong.php");
                 elseif(isset($_GET['action']) && $_GET['action'] =='thongtinnhanhang') require_once("thongtinnhanhang.php");
@@ -83,7 +88,7 @@ $u = new user;
         }
         function giohangtomtat(){
             $.ajax({
-                url: 'giohang-tomtat.php',
+                url: '<?php echo BASE_URL;?>giohang-tomtat.php',
                 success: function(data){
                     $("#giohang-tomtat").html(data);
                 }

@@ -155,6 +155,7 @@ class quantri extends sp{
 
         $sql = "INSERT INTO loaisp VALUES (null, {$_POST['idCL']}, '$ten', {$_POST['ThuTu']}, {$_POST['AnHien']})";
         if(!$result = $this->db->query($sql)) die($sql);
+        $_SESSION['success'] = 'Đã thêm thành công 1 loại sản phẩm';
         header("location: index.php?a=loaisp-xem");
     }
 
@@ -176,10 +177,9 @@ class quantri extends sp{
         if(count($this->errors) > 0) return false;
 
         $ten = $this->db->escape_string($_POST['TenLoai']);
-
         $sql = "UPDATE loaisp SET idCL={$_POST['idCL']}, TenLoai='$ten', ThuTu={$_POST['ThuTu']}, AnHien={$_POST['AnHien']} WHERE idLoai=$idLoai";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
-        header("location: index.php?a=loaisp-xem");
+        $_SESSION['success'] = 'Loại sản phẩm đã được cập nhật thành công';
     }
 
     public function xoaloaisp($idLoai){
@@ -194,6 +194,7 @@ class quantri extends sp{
         
         $sql = "DELETE FROM loaisp  WHERE idLoai=$idLoai";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $_SESSION['success'] = 'Đã xóa thành công 1 loại sản phẩm';
         header("location: index.php?a=loaisp-xem");
     }
 
@@ -238,12 +239,20 @@ class quantri extends sp{
         if(!is_numeric($_POST['Gia'])) $this->errors['Gia'] = "Trường này phải nhập số!";
         if(!empty($_POST['SoLuongTonKho']) && !is_numeric($_POST['SoLuongTonKho'])) $this->errors['SoLuongTonKho'] = "Trường này phải nhập số!";
         if(empty($_POST['Gia'])) $this->errors['Gia'] = "Không được bỏ trống trường này!";
-
+        
+        if(!empty($_POST['youtube'])){
+            $youtube = $this->db->escape_string($_POST['youtube']);
+            preg_match('/youtube\.com\/watch\?v=(\w+)/i', $youtube, $match);
+            if(count($match) != 2) $this->errors['youtube'] = 'link không đúng định dạng';
+            $youtube_value = $match[1];
+        }
+        
         if(count($this->errors) > 0) return false;
 
+        //hình chính mặc định:
         $urlHinh = "updating.png";
-        //nếu có up hình:
-        if($_FILES['urlHinh']['error'] != 4){
+        //nếu có up hình chính:
+        if(!empty($_FILES['urlHinh']['name'])){
             //kiem tra dinh dang file hinh upload
             $ext_list = array("jpeg", "png", "jpg");
             $file_ext = pathinfo($_FILES['urlHinh']['name'], PATHINFO_EXTENSION);
@@ -276,7 +285,45 @@ class quantri extends sp{
                 $urlHinh = $newname;
             }
         }
-
+        
+        //nếu có up hình phụ:
+        if(!empty($_FILES['hinhphu']['name'][0])){
+            $ext_list = array("jpeg", "png", "jpg");
+            $max_size = 1024*1024*2;
+            $arr_tenhinhphu = array();
+            //kiểm tra xem có hình nào ko hợp lệ ko
+            for($i=0; $i<count($_FILES['hinhphu']['name']); $i++){
+                $file_ext = pathinfo($_FILES['hinhphu']['name'][$i], PATHINFO_EXTENSION);
+                if(!in_array($file_ext, $ext_list)){
+                    $this->errors['hinhphu'] = 'Chỉ chấp nhận các định dạng: jpeg, png, jpg!';
+                    return false;
+                }
+                if($_FILES['hinhphu']['size'][$i] > $max_size){
+                    $this->errors['hinhphu'] = 'Chỉ chấp nhận hình dưới 2MB!';
+                    return false;
+                }
+                //loi he thong, mang:
+                if($_FILES['hinhphu']['error'][$i] > 0){
+                    $this->errors['hinhphu'] = 'Có lỗi xảy ra, xin thử lại!';
+                    return false;
+                }
+                                
+            }
+            //tất cả các hình đều hợp lệ, bắt dầu upload
+            for($i=0; $i<count($_FILES['hinhphu']['name']); $i++){
+                $newname = $this->changeTitle($_POST['TenSP']) ."-"."hinhphu_".$i. "." . $file_ext;
+                
+                //lưu tên để sau chèn vào database:
+                $arr_tenhinhphu[] = $newname;
+                
+                //đường dẫn lưu file:
+                $path = '../upload/sanpham/hinhphu/' . $newname;
+                if(move_uploaded_file($_FILES['hinhphu']['tmp_name'][$i], $path) == false){
+                    $this->errors['hinhphu'] = 'Có lỗi xảy ra, xin thử lại!';
+                    return false;
+                }
+            }
+        }
         
         $ngay = date('Y-m-d', time());
         $TenSP = $this->db->escape_string($_POST['TenSP']);
@@ -291,6 +338,22 @@ class quantri extends sp{
                             '$baiviet', 0, {$_POST['SoLuongTonKho']},
                             '$GhiChu', 0, {$_POST['AnHien']})";
         if(!$result = $this->db->query($sql)) die("loi ket noi");
+        $idSP = $this->db->insert_id;
+        
+        //insert youtube link:
+        if(!empty($_POST['youtube'])){
+            $sql = "INSERT INTO sanpham_youtube VALUES(null, $idSP, '$youtube_value')";
+            if(!$result = $this->db->query($sql)) die("loi ket noi");
+        }
+        
+        //insert url hình phụ:
+        if(!empty($_FILES['hinhphu']['name'][0])){
+            for($i=0; $i<count($_FILES['hinhphu']['name']); $i++){
+                 $sql = "INSERT INTO sanpham_hinh VALUES(null, $idSP, '{$arr_tenhinhphu[$i]}')";
+                if(!$result = $this->db->query($sql)) die("loi ket noi");
+            }
+        }
+        
         $_SESSION['success'] = 'Đã thêm thành công 1 sản phẩm';
         header("location: index.php?a=sanpham-xem");
     }
@@ -307,7 +370,14 @@ class quantri extends sp{
         if(!is_numeric($_POST['Gia'])) $this->errors['Gia'] = "Trường này phải nhập số!";
         if(!empty($_POST['SoLuongTonKho']) && !is_numeric($_POST['SoLuongTonKho'])) $this->errors['SoLuongTonKho'] = "Trường này phải nhập số!";
         if(empty($_POST['Gia'])) $this->errors['Gia'] = "Không được bỏ trống trường này!";
-
+        
+        if(!empty($_POST['youtube'])){
+            $youtube = $this->db->escape_string($_POST['youtube']);
+            preg_match('/youtube\.com\/watch\?v=(\w+)/i', $youtube, $match);
+            if(count($match) != 2) $this->errors['youtube'] = 'link không đúng định dạng';
+            $youtube_value = $match[1];
+        }
+        
         if(count($this->errors) > 0) return false;
         
         //kiem tra neu upload hinh moi
@@ -367,6 +437,86 @@ class quantri extends sp{
         //xoa hinh cu:
         if(!isset($hinhcu)) return true;
         if($hinhcu != "updating.png") unlink('../upload/sanpham/hinhchinh/'.$hinhcu);
+        
+        //youtube:
+        if(!empty($_FILES['hinhphu']['name'][0])){
+            for($i=0; $i<count($_FILES['hinhphu']['name']); $i++){
+                 $sql = "INSERT INTO sanpham_hinh VALUES(null, $idSP, '{$arr_tenhinhphu[$i]}')";
+                if(!$result = $this->db->query($sql)) die("loi ket noi");
+            }
+        }
+    }
+    
+    public function uphinhphu($idSP){
+        //tìm số thứ tự cao nhất của hình phụ hiện tại:
+        $dshinh = $this->layhinhsp($idSP);
+        $max = 0;
+        foreach($dshinh as $hinh){
+            $urlHinh = $hinh['urlHinh'];
+            preg_match('/(\d*)\.[a-z]*/', $urlHinh, $match);
+            $num = $match[1];
+            if($num > $max) $max = $num;
+        }
+        
+        
+        if(!empty($_FILES['hinhphu']['name'][0])){
+            $ext_list = array("jpeg", "png", "jpg");
+            $max_size = 1024*1024*2;
+            $arr_tenhinhphu = array();
+            //kiểm tra xem có hình nào ko hợp lệ ko
+            for($i=0; $i<count($_FILES['hinhphu']['name']); $i++){
+                $file_ext = pathinfo($_FILES['hinhphu']['name'][$i], PATHINFO_EXTENSION);
+                if(!in_array($file_ext, $ext_list)){
+                    $this->errors['hinhphu'] = 'Chỉ chấp nhận các định dạng: jpeg, png, jpg!';
+                }
+                if($_FILES['hinhphu']['size'][$i] > $max_size){
+                    $this->errors['hinhphu'] = 'Chỉ chấp nhận hình dưới 2MB!';
+                }
+                //loi he thong, mang:
+                if($_FILES['hinhphu']['error'][$i] > 0){
+                    $this->errors['hinhphu'] = 'Có lỗi xảy ra, xin thử lại!';
+                }  
+            }
+            
+            if(!empty($this->errors['hinhphu'])){ 
+                $_SESSION['fail'] = '<p class="alert alert-danger">'.$this->errors['hinhphu'].'</p>';
+                header("Location: index.php?a=sanpham-hinhphu&idSP=$idSP");
+                return false;
+            }
+            
+            //tất cả các hình đều hợp lệ, bắt dầu upload
+            for($i=0; $i<count($_FILES['hinhphu']['name']); $i++){
+                $sql = "SELECT TenSP FROM sanpham WHERE idSP=$idSP";
+                if(!$result = $this->db->query($sql)) die("loi ket noi");
+                $row = $result->fetch_row();
+                $TenSP = $row[0];
+                $newname = $this->changeTitle($TenSP) ."-"."hinhphu_".($max+$i+1). "." . $file_ext;
+                
+                //lưu tên để sau chèn vào database:
+                $arr_tenhinhphu[] = $newname;
+                
+                //đường dẫn lưu file:
+                $path = '../upload/sanpham/hinhphu/' . $newname;
+                if(move_uploaded_file($_FILES['hinhphu']['tmp_name'][$i], $path) == false){
+                    $this->errors['hinhphu'] = 'Có lỗi xảy ra, xin thử lại!';
+                    header("Location: index.php?a=sanpham-hinhphu&idSP=$idSP");
+                    return false;
+                }
+                
+                $sql = "INSERT INTO sanpham_hinh VALUES(null, $idSP, '{$arr_tenhinhphu[$i]}')";
+                if(!$result = $this->db->query($sql)) die("loi ket noi");
+            }
+            $_SESSION['success'] = '<p class="alert alert-success">up thành công!</p>';
+            header("Location: index.php?a=sanpham-hinhphu&idSP=$idSP");
+        }
+    }
+    
+    public function xoahinhphu($idHinh, $urlHinh, $idSP){
+        $sql = "DELETE FROM sanpham_hinh WHERE id_hinh=$idHinh";
+        if(!$result = $this->db->query($sql)) die("loi ket noi");
+        unlink('../upload/sanpham/hinhphu/'.$urlHinh);
+        $_SESSION['success'] = 'Đã xóa thành công 1 hình phụ';
+        header("location: index.php?a=sanpham-hinhphu&idSP=$idSP");
     }
 
     public function xoasanpham($idSP){
@@ -542,12 +692,6 @@ class quantri extends sp{
         if(!$result = $this->db->query($sql)) die("loi ket noi");
         $_SESSION['message'] = 'Đã xóa thành công user';
         header("Location: index.php?a=user-xem");
-    }
-
-    private function validate($input){
-        $input = $this->db->escape_string($input);
-        $input = trim($input);
-        return $input;
     }
     
 }

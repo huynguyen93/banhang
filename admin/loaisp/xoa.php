@@ -2,6 +2,6 @@
 
 settype($_GET['idLoai'], "int");
 
-if(!isset($_GET['idLoai']) || $_GET['idLoai'] < 1 ) header("location: index.php?c=loaisp&a=xem");
+if($_GET['idLoai'] <= 0) header("location: index.php?c=loaisp&a=xem");
 
 $qt->xoaloaisp($_GET['idLoai']);

@@ -1,6 +1,8 @@
 <?php
 
-if(!isset($_GET['idUser']) || $_GET['idUser'] < 1) header("Location: index.php?a=user-xem");
+settype($_GET['idUser'], "int");
+
+if($_GET['idUser'] <= 0) header("location: index.php?a=user-xem");
 
 $user = $qt->layusertheoid($_GET['idUser']);
 
@@ -46,7 +48,7 @@ if(isset($_POST['themuser'])) $qt->suauser($_GET['idUser']);
             <label for="AnHien">Group</label>
             <select name="idGroup" class="form-control">
                 <option value="0">User</option>
-                <option value="1" value="<?php if(isset($_POST['idGroup']) && $_POST['idGroup']==1 || ($user['idGroup'] == 1)) echo "selected";?>">Admin</option>
+                <option value="1" <?php if((isset($_POST['idGroup']) && $_POST['idGroup']==1) || ($user['idGroup'] == 1)) echo "selected";?>>Admin</option>
             </select>
         </div>
         <div class="form-group">

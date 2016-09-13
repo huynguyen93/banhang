@@ -3,14 +3,14 @@
         <div class="col-md-3">
             <p><i>&copy; 2016 Nhất Nghệ</i></p>
             <p>nhatnghe.com</p>
-            <p>Số 103, đường Bà Huyện Thanh Quan, Quận 3, TPHCM</p>
+            <p>Số 105, đường Bà Huyện Thanh Quan, Quận 3, TPHCM</p>
             <p>Email: cskh@nhatnghe.com</p>
             <p>Hotline: 19008198</p>
         </div>
         
         <div class="col-md-3">
             <p><a href="#">Về chúng tôi</a></p>
-            <p><a href="#">Liên hệ</a></p>
+            <p><a href="index.php?action=lienhe">Liên hệ</a></p>
             <p><a href="#">Hướng dẫn sử dụng web</a></p>
             <p><a href="#">Chính sách hoạt động</a></p>
             <p><a href="#">Thanh toán &amp; nhận hàng</a></p>

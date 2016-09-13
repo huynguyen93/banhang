@@ -8,7 +8,7 @@ if(count($_SESSION['sanpham']) > 0){
 
 ?>
 <div class="btn-giohang" id="btn-giohang" style="display:inline-block">
-    <a href="index.php?action=xemdonhang">Giỏ hàng<i class="glyphicon glyphicon-shopping-cart" id="cart" style="font-size: 25px;"></i> (<b id="sosanpham"><?php echo $tongsanpham;?></b>)</a>
+    <a href="<?php echo BASE_URL;?>index.php?action=xemdonhang">Giỏ hàng<i class="glyphicon glyphicon-shopping-cart" id="cart" style="font-size: 25px;"></i> (<b id="sosanpham"><?php echo $tongsanpham;?></b>)</a>
 </div>
 
 <div class="panel panel-default div-giohang" id="div-giohang">

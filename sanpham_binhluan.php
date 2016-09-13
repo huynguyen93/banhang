@@ -34,6 +34,7 @@ $dsbinhluan = $sp->laydsbinhluan($_GET['idSP']);
             </div>    
         </div>
         <div class="form-group">
+            <label for="noidung">Nội dung</label>
             <textarea name="noidung" class="form-control" rows="4"></textarea>
         </div>
         <div class="form-group">

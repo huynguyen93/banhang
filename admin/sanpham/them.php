@@ -44,13 +44,24 @@ if(isset($_POST['themsanpham'])) $qt->themsanpham();
             <label for="MoTa" >Mô tả</label>
             <textarea name="MoTa" class="form-control" rows="3"><?php if(isset($_POST['MoTa'])) echo $_POST['MoTa'];?></textarea>
         </div>
+        
+        <div class="form-group">
+            <label for="GhiChu">Ghi chú</label>
+            <textarea name="GhiChu" class="form-control" rows="2"><?php if(isset($_POST['GhiChu'])) echo $_POST['GhiChu'];?></textarea>
+        </div>
     </div>
         
     <div class="col-md-6" style="padding-left: 20px;">
         <div class="form-group">
-            <label for="urlHinh">Hình</label>
+            <label for="urlHinh">Hình chính</label>
             <?php if(isset($qt->errors['urlHinh'])) echo " <i class='text-danger'>{$qt->errors['urlHinh']}</i>";?>
             <input type="file" name="urlHinh" />
+        </div>
+        
+        <div class="form-group">
+            <label for="urlHinh">Hình phụ</label>
+            <?php if(isset($qt->errors['hinhphu'])) echo " <i class='text-danger'>{$qt->errors['hinhphu']}</i>";?>
+            <input type="file" name="hinhphu[]" multiple />
         </div>
         
         <div class="form-group">
@@ -68,8 +79,8 @@ if(isset($_POST['themsanpham'])) $qt->themsanpham();
         </div>
         
         <div class="form-group">
-            <label for="GhiChu">Ghi chú</label>
-            <textarea name="GhiChu" class="form-control" rows="2"><?php if(isset($_POST['GhiChu'])) echo $_POST['GhiChu'];?></textarea>
+            <label for="youtube">Link youtube</label>
+            <input type="text" name="youtube" class="form-control" value="<?php if(isset($_POST['youtube'])) echo $_POST['youtube'];?>" placeholder="ví dụ: https://www.youtube.com/watch?v=ZhEf7e4kopM">
         </div>
         
         <div class="form-group" style="clear:both;">

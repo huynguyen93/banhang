@@ -40,15 +40,15 @@
         <form method="post">
             <div class="form-group">
                 <label for="oldpass">Mật khẩu cũ</label>
-                <input type="text" name="oldpass" id="oldpass" class="form-control">
+                <input type="password" name="oldpass" id="oldpass" class="form-control">
             </div>
             <div class="form-group">
                 <label for="newpass">Mật khẩu mới</label>
-                <input type="text" name="newpass" id="newpass" class="form-control">
+                <input type="password" name="newpass" id="newpass" class="form-control">
             </div>
             <div class="form-group">
                 <label for="newpass">Xác nhận mật khẩu mới</label>
-                <input type="text" name="renewpass" id="renewpass" class="form-control">
+                <input type="password" name="renewpass" id="renewpass" class="form-control">
             </div>
             <div class="form-group">
                 <div class="col-xs-4" style="padding:0;"> 
@@ -82,7 +82,7 @@
                 data: "action=doipass&oldpass="+$('#oldpass').val()+"&newpass="+$("#newpass").val()+"&renewpass="+$("#renewpass").val(),
                 success: function(data){
                     if(data == 'OK'){
-                        $("#content").html("<h2>Đổi mật khẩu thành công</h2><a href='#' id='quayve'>Quay về</a>");
+                        $("#content").html("<span class='close'>x</span><h2>Đổi mật khẩu thành công</h2><a href='#' id='quayve'>Quay về</a>");
                     } else{
                         $("#error").html(data);
                     }

@@ -24,7 +24,7 @@ $dsbinhluan = $qt->laybinhluan(0, $totalrows, $current_page, $per_page);
             <td><?php echo $binhluan['hoten'];?></td>
             <td><?php echo $binhluan['email'];?></td>
             <td><span title="<?php echo $binhluan['noidung'];?>"><?php if(strlen($binhluan['noidung']) > 30) echo mb_substr($binhluan['noidung'], 0, strpos($binhluan['noidung'], ' ', 30))."..."; else echo $binhluan['noidung'];?><span></span></td>
-            <td><a href="#" class="duyet" idbl="<?php echo $binhluan['id_comment'];?>">Duyệt</a> / <a onclick="xacnhan();" href="#" class="xoa" idbl="<?php echo $binhluan['id_comment'];?>">Xóa</a></td> 
+            <td><a href="#" class="duyet" idbl="<?php echo $binhluan['id_comment'];?>">Duyệt</a> / <a href="#" class="xoa" idbl="<?php echo $binhluan['id_comment'];?>">Xóa</a></td> 
         </tr>
     <?php }?>
     </tbody>
@@ -46,6 +46,8 @@ $dsbinhluan = $qt->laybinhluan(0, $totalrows, $current_page, $per_page);
         });
         
         $("#dsbinhluan").on('click', '.xoa', function(){
+            var confirm = xacnhan();
+            if(confirm == false) return false;
             var idBL = $(this).attr("idbl");
             xoabinhluan(idBL);
             laybinhluan();
@@ -63,6 +65,7 @@ $dsbinhluan = $qt->laybinhluan(0, $totalrows, $current_page, $per_page);
     }
     
     function xoabinhluan(idBL){
+        
         $.ajax({
             url: "process.php",
             type: "get",

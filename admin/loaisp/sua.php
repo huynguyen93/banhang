@@ -1,13 +1,15 @@
 <?php
+settype($_GET['idLoai'], "int");
 
-if(!isset($_GET['idLoai']) || $_GET['idLoai'] < 1) header("location: index.php?a=loaisp-xem");
+if($_GET['idLoai'] <= 0) header("location: index.php?c=loaisp&a=xem");
 
 $loaisp = $qt->sualoaisp($_GET['idLoai']);
 
 if(isset($_POST['btnsualoaisp'])) $qt->sualoaisp($_GET['idLoai']);
 
 ?>
-<h2>Cập nhật loại sp</h2>
+<h2>Cập nhật loại sản phẩm</h2>
+<?php if(isset($_SESSION['success'])) echo "<p class='alert alert-success' style='padding:10px;'>{$_SESSION['success']}</p>"; unset($_SESSION['success']);?>
 <div class="">
     <form method="post" action="" class="col-md-6">
         
@@ -17,7 +19,7 @@ if(isset($_POST['btnsualoaisp'])) $qt->sualoaisp($_GET['idLoai']);
                 <?php $listchungloai = $qt->laychungloai(0);
                 foreach($listchungloai as $chungloai){
                 ?>
-                <option value="<?php echo $chungloai['idCL'] ?>" <?php if($loaisp['idCL'] == $chungloai['idCL']) echo "selected";?>><?php echo $chungloai['TenCL'];?></option>
+                <option value="<?php echo $chungloai['idCL'] ?>" <?php if($loaisp['idCL'] == $chungloai['idCL'] || (isset($_POST['idCL']) && $_POST['idCL']==$chungloai['idCL'])) echo "selected";?>><?php echo $chungloai['TenCL'];?></option>
                 <?php }?>
             </select>
         </div>
@@ -31,7 +33,7 @@ if(isset($_POST['btnsualoaisp'])) $qt->sualoaisp($_GET['idLoai']);
         <div class="form-group">
             <label for="ThuTu">Thứ tự</label>
             <?php if(isset($qt->errors['ThuTu'])) echo " <i class='text-danger'>{$qt->errors['ThuTu']}</i>";?>
-            <input type="text" name="ThuTu" value="<?php if(isset($_POST['TenCL'])) echo $_POST['ThuTu']; else echo $loaisp['ThuTu']; ?>" class="form-control">
+            <input type="text" name="ThuTu" value="<?php if(isset($_POST['ThuTu'])) echo $_POST['ThuTu']; else echo $loaisp['ThuTu']; ?>" class="form-control">
         </div>
         
         <div class="form-group">

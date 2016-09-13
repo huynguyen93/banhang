@@ -17,12 +17,17 @@
              
             <ul class="nav navbar-nav navbar-right">
                 <?php $listchungloai = $sp->laydschungloai();?>
-                <?php foreach($listchungloai as $chungloai){?>
-                <li class="<?php if($idCL == $chungloai['idCL']){echo "active-cat";}?>"><a href="index.php?chungloai=<?php echo $chungloai['idCL'];?>"><?php echo $chungloai['TenCL'] ?></a></li>
-                <?php }?>
+                <?php
+                foreach($listchungloai as $chungloai)
+                {
+                ?>
+                <li class="<?php if(isset($_GET['chungloai']) && $_GET['chungloai'] == $chungloai['idCL']){echo "active-cat";}?>"><a href="index.php?chungloai=<?php echo $chungloai['idCL'];?>"><?php echo $chungloai['TenCL'] ?></a></li>
+                <?php
+                }
+                ?>
                 <li class=""><a href="">Tin tức</a></li>
                 <li class=""><a href="">Khuyến mãi</a></li>
-                <li class=""><a href="">Liên hệ</a></li>
+                <li class="<?php if(isset($_GET['action']) && $_GET['action']=='lienhe') echo "active-cat";?>"><a href="index.php?action=lienhe">Liên hệ</a></li>
                 <li>
                     <form class="navbar-form navbar-left pull">
                     <div class="input-group">
