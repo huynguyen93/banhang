@@ -21,12 +21,6 @@ if(isset($_POST['themuser'])) $qt->suauser($_GET['idUser']);
         </div>
 
         <div class="form-group">
-            <label for="Password">Password</label>
-            <?php if(!empty($qt->errors['Password'])) echo "<i class='text-danger'>".$qt->errors['Password']."</i>";?>
-            <input type="password" name="Password" class="form-control" value="<?php if(isset($_POST['Password'])) echo $_POST['Password']; else echo $user['Password'];?>">
-        </div>
-
-        <div class="form-group">
             <label for="DiaChi">Địa chỉ</label>
             <?php if(!empty($qt->errors['DiaChi'])) echo "<i class='text-danger'>".$qt->errors['DiaChi']."</i>";?>
             <input type="text" name="DiaChi" class="form-control" value="<?php if(isset($_POST['DiaChi'])) echo $_POST['DiaChi']; else echo $user['DiaChi'];?>">

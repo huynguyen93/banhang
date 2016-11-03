@@ -647,6 +647,7 @@ class quantri extends sp{
         $HoTen = $this->db->escape_string($HoTen);
         $Email = $this->db->escape_string($Email);
         $Password = $this->db->escape_string($Password);
+        $Password = md5($Password);
         $DiaChi = $this->db->escape_string($DiaChi);
         $DienThoai = $this->db->escape_string($DienThoai);
         
@@ -661,26 +662,22 @@ class quantri extends sp{
     public function suauser($idUser){
         $HoTen =  trim($_POST['HoTen']);
         $Email = trim($_POST['Email']);
-        $Password =  trim($_POST['Password']);
         $DiaChi = trim($_POST['DiaChi']);
         $DienThoai = trim($_POST['DienThoai']);
 
         if(empty($Email)) $this->errors['Email'] = 'Trường này là bắt buộc!';
-        if(empty($HoTen)) $this->errors['HoTen'] = 'Trường này là bắt buộc!';
-        if(empty($Password)) $this->errors['Password'] = 'Trường này là bắt buộc!';
-        
+        if(empty($HoTen)) $this->errors['HoTen'] = 'Trường này là bắt buộc!';        
         if(count($this->errors) > 0) return false;
         
         $HoTen = $this->db->escape_string($HoTen);
         $Email = $this->db->escape_string($Email);
-        $Password = $this->db->escape_string($Password);
         $DiaChi = $this->db->escape_string($DiaChi);
         $DienThoai = $this->db->escape_string($DienThoai);
         
         $NgayDangKy = date("Y-m-d", time());
         
-        $sql = "UPDATE users SET HoTen='$HoTen', Password='$Password', 
-                DiaChi='$DiaChi', DienThoai='$DienThoai', Email='$Email',
+        $sql = "UPDATE users SET HoTen='$HoTen', DiaChi='$DiaChi',
+                DienThoai='$DienThoai', Email='$Email',
                 NgayDangKy='$NgayDangKy', idGroup={$_POST['idGroup']}
                 WHERE idUser = $idUser";
         if(!$result = $this->db->query($sql)) die("loi ket noi");

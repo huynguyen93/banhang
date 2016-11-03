@@ -1,3 +1,4 @@
+<?php if(!empty($_GET) && !isset($_GET['chungloai'])) return false; ?>
 <nav class="loaisp">
 <ul class="nav nav-tabs">
     <?php

@@ -1,3 +1,4 @@
+<?php if((!empty($_GET) && !isset($_GET['chungloai'])) || isset($_GET['idSP'])) return false; ?>
 <form method="get" action="" class="filter form-inline text-muted">
 
 <div class="form-group">

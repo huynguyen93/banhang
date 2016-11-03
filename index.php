@@ -41,10 +41,8 @@ $u = new user;
         </div>
 
         <div class="row filter-giohang">
-            <?php if(!isset($_GET['action'])){?>
-            <div class="col-xs-6 col-md-9"><?php if(isset($_GET['idSP'])) echo ""; else require_once("sanpham_filter.php");?></div>
+            <div class="col-xs-6 col-md-9"><?php require_once("sanpham_filter.php");?></div>
             <div class="col-xs-6 col-md-3 text-center giohang"><?php require_once("giohang.php");?></div>
-            <?php }?>
         </div>
 
         <div class="row">
